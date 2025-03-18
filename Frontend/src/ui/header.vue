@@ -6,8 +6,8 @@
             </div></div>
             <div class="right">
                 <div class="header__menu">
-                    <a href="#">Главная</a>
-                    <a href="#">О нас</a>
+                    <router-link to="/">Главная</router-link>
+                    <router-link to="/about">О нас</router-link>
                 </div>
             </div>
         </header>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-
+import { RouterLink } from 'vue-router'
 </script>
 
 <style scoped lang="sass">
