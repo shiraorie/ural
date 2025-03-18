@@ -1,33 +1,17 @@
 <template>
-    <div id="map" class="map"></div>
+    <div class="map">
+        <a href="https://yandex.ru/maps/-/CDaWjX8y" target="_blank" class="map__link">
+            <img src="https://static-maps.yandex.ru/1.x/?ll=37.530865,55.702868&z=15&l=map&pt=37.530865,55.702868,pm2rdm" alt="Карта с местоположением МГУ" class="map__image">
+            <div class="map__overlay">
+                <div class="map__text">МГУ им. М.В. Ломоносова</div>
+                <div class="map__subtext">Нажмите чтобы открыть карту</div>
+            </div>
+        </a>
+    </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-
-onMounted(() => {
-    // Загружаем API Яндекс Карт
-    const script = document.createElement('script')
-    script.src = 'https://api-maps.yandex.ru/2.1/?apikey=ВАШ_API_КЛЮЧ&lang=ru_RU'
-    document.head.appendChild(script)
-
-    script.onload = () => {
-        // Инициализируем карту после загрузки API
-        ymaps.ready(() => {
-            const map = new ymaps.Map('map', {
-                center: [55.702868, 37.530865], // Координаты МГУ
-                zoom: 15
-            })
-
-            // Добавляем метку на карту
-            const placemark = new ymaps.Placemark([55.702868, 37.530865], {
-                balloonContent: 'МГУ им. М.В. Ломоносова'
-            })
-
-            map.geoObjects.add(placemark)
-        })
-    }
-})
+// Не требуется JavaScript для статической карты
 </script>
 
 <style scoped lang="sass">
@@ -36,4 +20,34 @@ onMounted(() => {
     height: 500px
     border-radius: 12px
     overflow: hidden
+    position: relative
+
+    &__link
+        display: block
+        width: 100%
+        height: 100%
+        text-decoration: none
+
+    &__image
+        width: 100%
+        height: 100%
+        object-fit: cover
+
+    &__overlay
+        position: absolute
+        bottom: 0
+        left: 0
+        right: 0
+        background: rgba(0, 0, 0, 0.7)
+        padding: 15px
+        color: white
+
+    &__text
+        font-size: 18px
+        font-weight: 500
+        margin-bottom: 5px
+
+    &__subtext
+        font-size: 14px
+        opacity: 0.8
 </style>

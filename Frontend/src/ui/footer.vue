@@ -48,9 +48,10 @@
 
 <style scoped lang="sass">
 footer
-    padding: 40px 0
+    padding: 40px 0 
     background: var(--color-main)
     width: 100%
+    margin-top: 8px
 
 .footer__content
     display: flex
