@@ -1,34 +1,75 @@
 <template>
-  
   <div class="container">
-    <div class="main">
-      <div class="main__title">
-        <carousel :carouselSlides="carouselSlides" />
-      </div>
+    <!-- Секция с каруселью -->
+    <section class="hero-section">
+      <carousel :carouselSlides="carouselSlides" />
+    </section>
 
+    <!-- Секция с карточками туров -->
+    <section class="tours-section">
+      <h2 class="section-title">Популярные туры</h2>
       <div class="card-wrapper">
-       <card v-for="card in cards" :key="card.id" :handleClick="handleClick" :title="card.title" :description="card.description" :image="card.image" :rating="card.rating" :price="card.price" :location="card.location" />
+        <card 
+          v-for="card in storeCards" 
+          :key="card.id" 
+          :handleClick="() => handleCardClick(card)" 
+          :title="card.title" 
+          :description="card.description" 
+          :image="card.image" 
+          :rating="card.rating" 
+          :price="card.price" 
+          :location="card.location" 
+        />
       </div>
-      <sectionWher />
-      <email />
-  
+    </section>
 
-    </div>
-    <popTour v-if="isPopTourOpen" @close="closePopTour" :images="images" :title="title" :description="description" :price="price" :rating="rating" :includes="includes" />
+    <!-- Секция с информацией "Где находимся" -->
+    <section class="where-section">
+      <sectionWher />
+    </section>
+
+    <!-- Секция с формой для email-подписки -->
+    <section class="email-section">
+      <email />
+    </section>
+
+    <!-- Модальное окно с детальной информацией о туре -->
+    <popTour 
+      v-if="isPopTourOpen" 
+      @close="closePopTour" 
+      :images="store.selectedTour.images" 
+      :title="store.selectedTour.title" 
+      :description="store.selectedTour.description" 
+      :price="store.selectedTour.price" 
+      :rating="store.selectedTour.rating" 
+      :includes="store.selectedTour.includes" 
+    />
   </div>
 </template>
 
-<script setup >
-import { ref, onMounted } from 'vue'
+<script setup>
+import { ref, onMounted, computed } from 'vue'
+import { useCardsStore } from '@/store'
+
+// Импорт компонентов
 import sectionWher from '@/ui/sectionWher.vue'
 import email from '@/ui/email.vue'
 import card from '@/ui/card.vue'
 import carousel from '@/pages/carousel.vue'
 import popTour from '@/ui/popTour.vue'
 
+// Инициализация хранилища
+const store = useCardsStore()
+
+// Состояние модального окна
 const isPopTourOpen = ref(false)
 
-const handleClick = () => {
+// Вычисляемое свойство для карточек из хранилища
+const storeCards = computed(() => store.cards)
+
+// Обработчики событий
+const handleCardClick = (card) => {
+  store.setSelectedTour(card)
   isPopTourOpen.value = true
 }
 
@@ -36,71 +77,53 @@ const closePopTour = () => {
   isPopTourOpen.value = false
 }
 
+// Данные для карусели
 const carouselSlides = ref([
   {
-    title: 'Слайд 1',
-    description: 'Описание слайда 1',
+    title: 'Исследуй Урал',
+    description: 'Незабываемые путешествия по уникальным местам',
     image: 'https://avatars.mds.yandex.net/get-altay/4374841/2a0000017706403316ba81896cf7ca802576/orig'
   },
   {
-    title: 'Слайд 2',
-    description: 'Описание слайда 2',
+    title: 'Природа Урала',
+    description: 'Первозданная красота уральских гор и озёр',
     image: 'https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13'
   },
-  
 ])
 
-
-const cards = ref([
-  {
-    id: 1,
-    title: 'Карточка 1',
-    description: 'Описание карточки 1',
-    image: 'https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13',
-    price: 100,
-    rating: 4.5,
-    location: 'Локация 1'
-  },
-  {
-    id: 2,
-    title: 'Карточка 2',
-    description: 'Описание карточки 2',
-    image: 'https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13',
-    price: 200,
-    rating: 4.5,
-    location: 'Локация 2'
-  },
-  {
-    id: 3,
-    title: 'Карточка 3',
-    description: 'Описание карточки 3',
-    image: 'https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13',
-    price: 300,
-    rating: 4.5,
-    location: 'Локация 3'
-  }
-])
-
-const images = ref(['image1.jpg', 'image2.jpg'])
-const title = ref('Название тура')
-const description = ref('Описание тура')
-const price = ref(100)
-const rating = ref(4.5)
-const includes = ref(['Услуга 1', 'Услуга 2'])
-
-onMounted(() => {
-  console.log(cards.value)
-  
+// Получение данных при монтировании компонента
+onMounted(async () => {
+  await store.getCards()
 })
-
-
-
-
 </script>
 
 <style scoped lang="sass">
+// Общие стили
+.container
+  max-width: 1200px
+  margin: 0 auto
+  padding: 0 15px
+
+// Стили для секций
+section
+  margin-bottom: 60px
+
+.section-title
+  margin-bottom: 30px
+  font-size: 28px
+  font-weight: 600
+  text-align: center
+
+// Стили для карточек
 .card-wrapper 
   display: flex
+  flex-wrap: wrap
   gap: 20px
+  justify-content: center
 
+// Медиа-запросы для адаптивности
+@media (max-width: 768px)
+  .card-wrapper
+    flex-direction: column
+    align-items: center
 </style>

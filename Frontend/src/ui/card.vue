@@ -45,7 +45,7 @@ defineProps({
     },
     priceUnit: {
         type: String,
-        default: 'Person'
+        default: 'Человек'
     }
 })
 </script>
