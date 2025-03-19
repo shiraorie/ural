@@ -9,4 +9,6 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  // Указываем базовый путь для сборки - имя репозитория для GitHub Pages
+  base: '/ural/',
 })

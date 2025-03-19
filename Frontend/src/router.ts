@@ -10,8 +10,11 @@ import cookiePolicy from './pages/policies/CookiePolicy.vue'
 import privacyPolicy from './pages/policies/PrivacyPolicy.vue'
 import termsOfUse from './pages/policies/TermsOfUse.vue'
 
+// Формируем базовый путь с учётом режима разработки/продакшн
+const base = import.meta.env.MODE === 'production' ? '/ural/' : '/'
+
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(base),
   routes: [
     { path: '/', component: main, meta: { title: 'Память Урала' } },
     { path: '/reservation', component: reservation, meta: { title: 'Бронирование' } },
