@@ -67,8 +67,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useCardsStore } from '@/store'
 
 const router = useRouter()
+const store = useCardsStore()
 
 const props = defineProps({
     title: {
@@ -127,6 +129,7 @@ const decrementPersons = () => {
 }
 
 const handlePayment = () => {
+    store.setPaymentInfo(props.title, props.price, persons.value)
     router.push('/payment')
 }
 </script>

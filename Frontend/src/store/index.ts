@@ -22,6 +22,14 @@ interface ITour {
   includes: string[]
 }
 
+interface IPaymentInfo {
+  tourTitle: string
+  tourPrice: number
+  persons: number
+  totalPrice: number
+  isPaymentComplete: boolean
+}
+
 export const useCardsStore = defineStore('cards', () => {
   const cards = ref<ICard[]>([])
   const selectedTour = ref<ITour>({
@@ -31,6 +39,14 @@ export const useCardsStore = defineStore('cards', () => {
     price: 0,
     rating: 0,
     includes: []
+  })
+  
+  const paymentInfo = ref<IPaymentInfo>({
+    tourTitle: '',
+    tourPrice: 0,
+    persons: 1,
+    totalPrice: 0,
+    isPaymentComplete: false
   })
   
   const getCards = async () => {
@@ -79,7 +95,40 @@ export const useCardsStore = defineStore('cards', () => {
     }
   }
 
-  return { cards, getCards, selectedTour, setSelectedTour }
+  const setPaymentInfo = (title: string, price: number, persons: number) => {
+    paymentInfo.value = {
+      tourTitle: title,
+      tourPrice: price,
+      persons: persons,
+      totalPrice: price * persons,
+      isPaymentComplete: false
+    }
+  }
+
+  const completePayment = () => {
+    paymentInfo.value.isPaymentComplete = true
+  }
+
+  const resetPaymentInfo = () => {
+    paymentInfo.value = {
+      tourTitle: '',
+      tourPrice: 0,
+      persons: 1,
+      totalPrice: 0,
+      isPaymentComplete: false
+    }
+  }
+
+  return { 
+    cards, 
+    getCards, 
+    selectedTour, 
+    setSelectedTour, 
+    paymentInfo, 
+    setPaymentInfo, 
+    completePayment,
+    resetPaymentInfo
+  }
 })
 
 export default pinia 
