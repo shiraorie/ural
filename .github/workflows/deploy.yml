@@ -37,6 +37,15 @@ jobs:
         working-directory: ./Frontend
         run: npm ci
 
+      - name: Создание файла shims-vue.d.ts
+        run: |
+          echo '/* eslint-disable */' > Frontend/src/shims-vue.d.ts
+          echo 'declare module "*.vue" {' >> Frontend/src/shims-vue.d.ts
+          echo '  import type { DefineComponent } from "vue"' >> Frontend/src/shims-vue.d.ts
+          echo '  const component: DefineComponent<{}, {}, any>' >> Frontend/src/shims-vue.d.ts
+          echo '  export default component' >> Frontend/src/shims-vue.d.ts
+          echo '}' >> Frontend/src/shims-vue.d.ts
+
       - name: Сборка проекта
         working-directory: ./Frontend
         run: npm run build
