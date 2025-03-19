@@ -10,15 +10,19 @@
                 <span>{{ location }}</span>
             </div>
             <div class="card__price">
-                <span>${{ price }}/{{ priceUnit }}</span>
+                <span>₽ {{ price }}/{{ priceUnit }}</span>
             </div>
-            <button class="card__button">Забронировать</button>
+            <button class="card__button" @click="handleClick">Забронировать</button>
         </div>
     </div>
 </template>
 
 <script setup>
 defineProps({
+    handleClick: {
+        type: Function,
+        required: true
+    },
     image: {
         type: String,
         required: true
