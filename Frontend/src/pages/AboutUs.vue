@@ -1,28 +1,17 @@
 <template>
-    <div class="container">
-        <header>
-           <div class="left"> <div class="header__logo">
-                <router-link to="/">
-                    <logoB />
-                </router-link>
-            </div></div>
-            <div class="right">
-                <div class="header__menu">
-                    <router-link to="/">Главная</router-link>
-                    <router-link to="/about">О нас</router-link>
-                </div>
-            </div>
-        </header>
+  <div class="container">
+    <div class="about-us">
+      <h1>О нас</h1>
+      <p>Мы предлагаем лучшие туры по Свердловской области и Уралу. Наша команда профессионалов готова помочь вам организовать незабываемое путешествие.</p>
     </div>
+  </div>
 </template>
 
 <script setup>
 import { RouterLink } from 'vue-router'
-import logoB from '@/assets/icon/logoB.vue'
 </script>
 
 <style scoped lang="sass">
-
 header
     background-color: var(--color-primary)
     color: var(--color-secondary)
@@ -58,5 +47,10 @@ header
         &:hover
             color: var(--color-tertiary)
 
+.about-us 
+  padding: 20px
+  font-family: Arial, sans-serif
+
 </style>
+
 

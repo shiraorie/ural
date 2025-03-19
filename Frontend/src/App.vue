@@ -10,9 +10,17 @@
 
 <script setup >
 import { RouterView } from 'vue-router'
+import router from './router'
 import { ref } from 'vue'
 import Header from './ui/header.vue'
 import Footer from './ui/footer.vue'
+
+const DefaultTitle = 'Память Урала'
+
+router.afterEach((to) => {
+  document.title = to.meta.title || DefaultTitle
+})
+
 
 const message = ref('Привет, мир!')
 

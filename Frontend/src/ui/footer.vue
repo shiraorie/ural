@@ -4,31 +4,31 @@
             <div class="container">
             <div class="footer__content">
                 <div class="footer__logo">
-                    <img src="../assets/logo.svg" alt="logo" />
+                   
+                    <LogoB />
                 </div>
                 <div class="footer__links">
                     <div class="footer__column">
-                        <h3>Solutions</h3>
-                        <a href="#">Services</a>
-                        <a href="#">Speakers</a>
-                        <a href="#">Careers</a>
+                        <h3>Навигация</h3>
+                        <a href="#">Главная</a>
+                        <a href="#">О нас</a>
+                        <a href="#">Контакты</a>
                     </div>
                     <div class="footer__column">
-                        <h3>Resources</h3>
-                        <a href="#">Blog</a>
-                        <a href="#">Press releases</a>
+                        <h3>Соц сети</h3>
+                        <a href="#">Вконтакте</a>
+                        <a href="#">Telegram</a>
                     </div>
                     <div class="footer__column">
-                        <h3>Company</h3>
-                        <a href="#">About Us</a>
-                        <a href="#">Open roles</a>
-                        <a href="#">Media inquiries</a>
-                        <a href="#">Log in</a>
+                        <h3>О сайте</h3>
+                        <a href="#">Cookie</a>
+                        <a href="#">Политика конфиденциальности</a>
+                        <a href="#">Условия использования</a>
                     </div>
                     <div class="footer__column">
-                        <h3>Contact Us</h3>
-                        <a href="#">Support</a>
-                        <a href="#">Sales</a>
+                        <h3>Контакты</h3>
+                        <a href="tel:+79999999999"> +7 (999) 999-99-99</a>
+                        <a href="mailto:info@example.com">info@example.com</a>
                     </div>
                 </div>
                 <div class="footer__social">
@@ -43,6 +43,8 @@
 </template>
 
 <script setup>
+import LogoB from '../assets/icon/logoB.vue';
+
 
 </script>
 
