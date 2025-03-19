@@ -10,31 +10,29 @@
                 <div class="footer__links">
                     <div class="footer__column">
                         <h3>Навигация</h3>
-                        <a href="#">Главная</a>
-                        <a href="#">О нас</a>
-                        <a href="#">Контакты</a>
+                        <router-link to="/">Главная</router-link>
+                        <router-link to="/about">О нас</router-link>
+                        <router-link to="/news">Новости</router-link>
                     </div>
                     <div class="footer__column">
                         <h3>Соц сети</h3>
-                        <a href="#">Вконтакте</a>
-                        <a href="#">Telegram</a>
+                        <a href="https://vk.com" target="_blank" rel="noopener noreferrer">Вконтакте</a>
+                        <a href="https://t.me" target="_blank" rel="noopener noreferrer">Telegram</a>
                     </div>
                     <div class="footer__column">
                         <h3>О сайте</h3>
-                        <a href="#">Cookie</a>
-                        <a href="#">Политика конфиденциальности</a>
-                        <a href="#">Условия использования</a>
+                        <router-link to="/policies/cookie">Cookie</router-link>
+                        <router-link to="/policies/privacy">Политика конфиденциальности</router-link>
+                        <router-link to="/policies/terms">Пользовательское соглашение</router-link>
                     </div>
                     <div class="footer__column">
                         <h3>Контакты</h3>
-                        <a href="tel:+79999999999"> +7 (999) 999-99-99</a>
-                        <a href="mailto:info@example.com">info@example.com</a>
+                        <a href="tel:+79999999999">+7 (999) 999-99-99</a>
+                        <a href="mailto:info@uraltravel.ru">info@uraltravel.ru</a>
                     </div>
                 </div>
-                <div class="footer__social">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                <div class="footer__copyright">
+                    <p>&copy; {{ new Date().getFullYear() }} "Память Урала". Все права защищены.</p>
                 </div>
             </div>  
         </div>
@@ -64,6 +62,16 @@ footer
     display: flex
     justify-content: space-between
     gap: 20px
+    
+    @media (max-width: 768px)
+        flex-wrap: wrap
+        
+        .footer__column
+            flex: 0 0 calc(50% - 20px)
+            
+    @media (max-width: 576px)
+        .footer__column
+            flex: 0 0 100%
 
 .footer__column
     display: flex
@@ -90,4 +98,11 @@ footer
         font-size: 20px
         &:hover
             color: #333
+            
+.footer__copyright
+    text-align: center
+    color: #666
+    font-size: 14px
+    border-top: 1px solid rgba(0, 0, 0, 0.1)
+    padding-top: 20px
 </style>
