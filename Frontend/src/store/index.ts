@@ -1,5 +1,5 @@
 import { createPinia, defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 const pinia = createPinia()
 
