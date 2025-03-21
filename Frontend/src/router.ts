@@ -6,6 +6,7 @@ import aboutUs from './pages/AboutUs.vue'
 import tourPurchase from './pages/TourPurchase.vue'
 import payment from './pages/Payment.vue'
 import news from './pages/News.vue'
+import tours from './pages/Tours.vue'
 import cookiePolicy from './pages/policies/CookiePolicy.vue'
 import privacyPolicy from './pages/policies/PrivacyPolicy.vue'
 import termsOfUse from './pages/policies/TermsOfUse.vue'
@@ -22,6 +23,7 @@ const router = createRouter({
     { path: '/tour-purchase', component: tourPurchase, meta: { title: 'Покупка тура' } },
     { path: '/payment', component: payment, meta: { title: 'Оплата' } },
     { path: '/news', component: news, meta: { title: 'Новости и события' } },
+    { path: '/tours', component: tours, meta: { title: 'Туры' } },
     { path: '/policies/cookie', component: cookiePolicy, meta: { title: 'Политика использования файлов cookie' } },
     { path: '/policies/privacy', component: privacyPolicy, meta: { title: 'Политика конфиденциальности' } },
     { path: '/policies/terms', component: termsOfUse, meta: { title: 'Пользовательское соглашение' } },

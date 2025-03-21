@@ -102,7 +102,7 @@ export const useCardsStore = defineStore('cards', () => {
     {
       title: 'Исследуй Урал',
       description: 'Незабываемые путешествия по уникальным местам',
-      image: 'https://i.ytimg.com/vi/QxKcfh-grXo/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgZig3MA8=&rs=AOn4CLDQq19Vibn0Lf2iWqbAaYVJn0kz6g'
+      image: 'https://proza.ru/pics/2022/11/03/1598.jpg'
     },
     {
       title: 'Природа Урала',
@@ -225,7 +225,7 @@ export const useCardsStore = defineStore('cards', () => {
         <li>Фотографии с самых красивых видовых точек</li>
       </ul>
       <p>Первые группы отправятся по новому маршруту уже в июне. Успейте забронировать места!</p>`,
-      image: 'https://i.ytimg.com/vi/QxKcfh-grXo/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgZig3MA8=&rs=AOn4CLDQq19Vibn0Lf2iWqbAaYVJn0kz6g',
+      image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
       date: '2023-04-15',
       category: 'tours'
     },
@@ -321,12 +321,12 @@ export const useCardsStore = defineStore('cards', () => {
             id: 1,
             title: 'Природа Южного Урала',
             description: 'Тур по самым живописным местам Южного Урала с посещением национального парка Таганай.',
-            image: 'https://i.ytimg.com/vi/QxKcfh-grXo/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgZig3MA8=&rs=AOn4CLDQq19Vibn0Lf2iWqbAaYVJn0kz6g',
+            image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
             price: 12500,
             rating: 4.8,
             location: 'Южный Урал',
             images: [
-              'https://i.ytimg.com/vi/QxKcfh-grXo/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgZig3MA8=&rs=AOn4CLDQq19Vibn0Lf2iWqbAaYVJn0kz6g',
+              'https://proza.ru/pics/2022/11/03/1598.jpg',
               'https://proza.ru/pics/2022/11/03/1598.jpg',
               'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13'
             ],
@@ -370,7 +370,7 @@ export const useCardsStore = defineStore('cards', () => {
             images: [
               'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
               'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
-              'https://i.ytimg.com/vi/QxKcfh-grXo/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgZig3MA8=&rs=AOn4CLDQq19Vibn0Lf2iWqbAaYVJn0kz6g'
+              'https://proza.ru/pics/2022/11/03/1598.jpg'
             ],
             includes: [
               'Проживание в гостевом доме',
@@ -390,7 +390,7 @@ export const useCardsStore = defineStore('cards', () => {
             location: 'Башкирия',
             images: [
               'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
-              'https://i.ytimg.com/vi/QxKcfh-grXo/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgZig3MA8=&rs=AOn4CLDQq19Vibn0Lf2iWqbAaYVJn0kz6g',
+              'https://proza.ru/pics/2022/11/03/1598.jpg',
               'https://proza.ru/pics/2022/11/03/1598.jpg'
             ],
             includes: [
@@ -427,12 +427,12 @@ export const useCardsStore = defineStore('cards', () => {
             id: 6,
             title: 'Зимний Урал: горные лыжи и снегоходы',
             description: 'Активный зимний отдых на лучших горнолыжных курортах Урала с катанием на снегоходах по заснеженным лесам.',
-            image: 'https://avatars.mds.yandex.net/get-altay/894580/2a00000187f8c3fc4d7cf45c3f93edace6bc/orig',
+            image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
             price: 19500,
             rating: 4.8,
             location: 'Челябинская область, Башкирия',
             images: [
-              'https://avatars.mds.yandex.net/get-altay/894580/2a00000187f8c3fc4d7cf45c3f93edace6bc/orig',
+              'https://proza.ru/pics/2022/11/03/1598.jpg',
               'https://avatars.mds.yandex.net/get-altay/5626432/2a00000187f8c3fde94e4889fbda1c63cbb4/orig',
               'https://avatars.mds.yandex.net/get-altay/4831158/2a00000187f8c3fec15c33f45ba79f35be3a/orig'
             ],

@@ -123,6 +123,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useCardsStore } from '@/store'
+import { useRouter } from 'vue-router'
 
 // Импорт компонентов
 import sectionWher from '@/ui/sectionWher.vue'
@@ -133,6 +134,7 @@ import popTour from '@/ui/popTour.vue'
 
 // Инициализация хранилища
 const store = useCardsStore()
+const router = useRouter()
 
 // Состояние модального окна
 const isPopTourOpen = ref(false)
@@ -157,8 +159,7 @@ const scrollToTours = () => {
 
 // Показать тематические туры
 const showThemeTours = (theme) => {
-  console.log(`Показать туры по теме: ${theme}`)
-  // В будущем здесь может быть фильтрация или переход на страницу тематических туров
+  router.push({ path: '/tours', query: { theme } })
 }
 
 // Получение данных при монтировании компонента

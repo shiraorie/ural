@@ -9,6 +9,7 @@
             <div class="right">
                 <div class="header__menu">
                     <router-link to="/">Главная</router-link>
+                    <router-link to="/tours">Туры</router-link>
                     <router-link to="/news">Новости</router-link>
                     <router-link to="/about">О нас</router-link>
                 </div>
