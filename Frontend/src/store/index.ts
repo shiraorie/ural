@@ -314,140 +314,138 @@ export const useCardsStore = defineStore('cards', () => {
   const getCards = async () => {
     isLoading.value = true
     try {
-      // Имитация запроса к API
-      setTimeout(() => {
-        cards.value = [
-          {
-            id: 1,
-            title: 'Природа Южного Урала',
-            description: 'Тур по самым живописным местам Южного Урала с посещением национального парка Таганай.',
-            image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
-            price: 12500,
-            rating: 4.8,
-            location: 'Южный Урал',
-            images: [
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13'
-            ],
-            includes: [
-              'Проживание в палатках',
-              'Питание (завтрак, обед, ужин)',
-              'Транспорт от Челябинска и обратно',
-              'Услуги гида',
-              'Аренда туристического снаряжения'
-            ]
-          },
-          {
-            id: 2,
-            title: 'Таганай за 2 дня',
-            description: 'Короткое, но насыщенное путешествие в национальный парк «Таганай» — жемчужину Южного Урала.',
-            image: 'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13',
-            price: 7800,
-            rating: 4.6,
-            location: 'Челябинская область',
-            images: [
-              'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13',
-              'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
-              'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/'
-            ],
-            includes: [
-              'Проживание в приюте',
-              'Питание (завтрак, обед, ужин)',
-              'Транспорт от Челябинска и обратно',
-              'Услуги гида',
-              'Входные билеты в национальный парк'
-            ]
-          },
-          {
-            id: 3,
-            title: 'Озеро Тургояк и гора Вишневая',
-            description: 'Поездка на живописное озеро Тургояк, называемое "младшим братом Байкала" и восхождение на гору Вишневая.',
-            image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
-            price: 9500,
-            rating: 4.9,
-            location: 'Челябинская область',
-            images: [
-              'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
-              'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
-              'https://proza.ru/pics/2022/11/03/1598.jpg'
-            ],
-            includes: [
-              'Проживание в гостевом доме',
-              'Питание (завтрак и ужин)',
-              'Транспорт по маршруту',
-              'Услуги гида',
-              'Экскурсии по программе'
-            ]
-          },
-          {
-            id: 4,
-            title: 'Сплав по реке Белая',
-            description: 'Увлекательный сплав по одной из красивейших рек Южного Урала. Подходит для начинающих и семей с детьми.',
-            image: 'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
-            price: 14200,
-            rating: 4.7,
-            location: 'Башкирия',
-            images: [
-              'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://proza.ru/pics/2022/11/03/1598.jpg'
-            ],
-            includes: [
-              'Проживание в палатках',
-              'Трехразовое питание',
-              'Транспорт до места начала сплава и обратно',
-              'Аренда сплавного снаряжения',
-              'Услуги инструктора',
-              'Спасательные жилеты'
-            ]
-          },
-          {
-            id: 5,
-            title: 'По следам древних цивилизаций: Аркаим',
-            description: 'Путешествие в одно из самых загадочных мест на Урале - древнее городище Аркаим, возраст которого около 4000 лет.',
-            image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
-            price: 16800,
-            rating: 4.5,
-            location: 'Челябинская область',
-            images: [
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13',
-              'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13'
-            ],
-            includes: [
-              'Проживание в гостинице',
-              'Питание по программе',
-              'Транспорт и трансферы',
-              'Экскурсии с профессиональным гидом',
-              'Входные билеты в музеи'
-            ]
-          },
-          {
-            id: 6,
-            title: 'Зимний Урал: горные лыжи и снегоходы',
-            description: 'Активный зимний отдых на лучших горнолыжных курортах Урала с катанием на снегоходах по заснеженным лесам.',
-            image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
-            price: 19500,
-            rating: 4.8,
-            location: 'Челябинская область, Башкирия',
-            images: [
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://avatars.mds.yandex.net/get-altay/5626432/2a00000187f8c3fde94e4889fbda1c63cbb4/orig',
-              'https://avatars.mds.yandex.net/get-altay/4831158/2a00000187f8c3fec15c33f45ba79f35be3a/orig'
-            ],
-            includes: [
-              'Проживание в отеле 4*',
-              'Завтраки',
-              'Ски-пассы на 3 дня',
-              'Аренда снегоходов на 2 часа',
-              'Трансферы по программе',
-              'Услуги инструктора'
-            ]
-          }
-        ]
-        isLoading.value = false
-      }, 1000)
+      // Непосредственная инициализация данных вместо имитации API-запроса
+      cards.value = [
+        {
+          id: 1,
+          title: 'Природа Южного Урала',
+          description: 'Тур по самым живописным местам Южного Урала с посещением национального парка Таганай.',
+          image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
+          price: 12500,
+          rating: 4.8,
+          location: 'Южный Урал',
+          images: [
+            'https://proza.ru/pics/2022/11/03/1598.jpg',
+            'https://proza.ru/pics/2022/11/03/1598.jpg',
+            'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13'
+          ],
+          includes: [
+            'Проживание в палатках',
+            'Питание (завтрак, обед, ужин)',
+            'Транспорт от Челябинска и обратно',
+            'Услуги гида',
+            'Аренда туристического снаряжения'
+          ]
+        },
+        {
+          id: 2,
+          title: 'Таганай за 2 дня',
+          description: 'Короткое, но насыщенное путешествие в национальный парк «Таганай» — жемчужину Южного Урала.',
+          image: 'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13',
+          price: 7800,
+          rating: 4.6,
+          location: 'Челябинская область',
+          images: [
+            'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13',
+            'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
+            'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/'
+          ],
+          includes: [
+            'Проживание в приюте',
+            'Питание (завтрак, обед, ужин)',
+            'Транспорт от Челябинска и обратно',
+            'Услуги гида',
+            'Входные билеты в национальный парк'
+          ]
+        },
+        {
+          id: 3,
+          title: 'Озеро Тургояк и гора Вишневая',
+          description: 'Поездка на живописное озеро Тургояк, называемое "младшим братом Байкала" и восхождение на гору Вишневая.',
+          image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
+          price: 9500,
+          rating: 4.9,
+          location: 'Челябинская область',
+          images: [
+            'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
+            'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
+            'https://proza.ru/pics/2022/11/03/1598.jpg'
+          ],
+          includes: [
+            'Проживание в гостевом доме',
+            'Питание (завтрак и ужин)',
+            'Транспорт по маршруту',
+            'Услуги гида',
+            'Экскурсии по программе'
+          ]
+        },
+        {
+          id: 4,
+          title: 'Сплав по реке Белая',
+          description: 'Увлекательный сплав по одной из красивейших рек Южного Урала. Подходит для начинающих и семей с детьми.',
+          image: 'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
+          price: 14200,
+          rating: 4.7,
+          location: 'Башкирия',
+          images: [
+            'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
+            'https://proza.ru/pics/2022/11/03/1598.jpg',
+            'https://proza.ru/pics/2022/11/03/1598.jpg'
+          ],
+          includes: [
+            'Проживание в палатках',
+            'Трехразовое питание',
+            'Транспорт до места начала сплава и обратно',
+            'Аренда сплавного снаряжения',
+            'Услуги инструктора',
+            'Спасательные жилеты'
+          ]
+        },
+        {
+          id: 5,
+          title: 'По следам древних цивилизаций: Аркаим',
+          description: 'Путешествие в одно из самых загадочных мест на Урале - древнее городище Аркаим, возраст которого около 4000 лет.',
+          image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
+          price: 16800,
+          rating: 4.5,
+          location: 'Челябинская область',
+          images: [
+            'https://proza.ru/pics/2022/11/03/1598.jpg',
+            'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13',
+            'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13'
+          ],
+          includes: [
+            'Проживание в гостинице',
+            'Питание по программе',
+            'Транспорт и трансферы',
+            'Экскурсии с профессиональным гидом',
+            'Входные билеты в музеи'
+          ]
+        },
+        {
+          id: 6,
+          title: 'Зимний Урал: горные лыжи и снегоходы',
+          description: 'Активный зимний отдых на лучших горнолыжных курортах Урала с катанием на снегоходах по заснеженным лесам.',
+          image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
+          price: 19500,
+          rating: 4.8,
+          location: 'Челябинская область, Башкирия',
+          images: [
+            'https://proza.ru/pics/2022/11/03/1598.jpg',
+            'https://avatars.mds.yandex.net/get-altay/5626432/2a00000187f8c3fde94e4889fbda1c63cbb4/orig',
+            'https://avatars.mds.yandex.net/get-altay/4831158/2a00000187f8c3fec15c33f45ba79f35be3a/orig'
+          ],
+          includes: [
+            'Проживание в отеле 4*',
+            'Завтраки',
+            'Ски-пассы на 3 дня',
+            'Аренда снегоходов на 2 часа',
+            'Трансферы по программе',
+            'Услуги инструктора'
+          ]
+        }
+      ]
+      isLoading.value = false
     } catch (error) {
       console.error('Error fetching cards:', error)
       isLoading.value = false
@@ -515,6 +513,9 @@ export const useCardsStore = defineStore('cards', () => {
       }, 2000)
     })
   }
+
+  // Инициализация карточек при создании хранилища
+  getCards()
 
   return {
     cards,

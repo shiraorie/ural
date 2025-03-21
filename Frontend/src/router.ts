@@ -11,8 +11,19 @@ import cookiePolicy from './pages/policies/CookiePolicy.vue'
 import privacyPolicy from './pages/policies/PrivacyPolicy.vue'
 import termsOfUse from './pages/policies/TermsOfUse.vue'
 
-// Формируем базовый путь с учётом режима разработки/продакшн
-const base = import.meta.env.MODE === 'production' ? '/ural/' : '/'
+// Определяем базовый путь для GitHub Pages
+let base = '/'
+// Если приложение запущено на GitHub Pages, базовый путь будет содержать название репозитория
+if (typeof window !== 'undefined' && window.location.hostname === 'shiraorie.github.io') {
+  // Получаем название репозитория из URL
+  const pathSegments = window.location.pathname.split('/')
+  if (pathSegments.length > 1) {
+    const repoName = pathSegments[1]
+    if (repoName) {
+      base = `/${repoName}/`
+    }
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(base),

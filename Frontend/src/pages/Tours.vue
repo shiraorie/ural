@@ -130,7 +130,7 @@ const isPopTourOpen = ref(false)
 
 // Получаем значение темы из URL параметров при загрузке страницы
 onMounted(async () => {
-  // Загружаем карточки туров
+  // Загружаем карточки туров, если они еще не загружены
   if (store.cards.length === 0) {
     await store.getCards()
   }

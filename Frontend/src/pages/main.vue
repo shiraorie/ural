@@ -20,7 +20,14 @@
     <!-- Секция с популярными турами -->
     <section class="tours-section">
       <h2 class="section-title">Популярные туры</h2>
-      <div class="card-wrapper">
+      <div v-if="isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Загрузка туров...</p>
+      </div>
+      <div v-else-if="storeCards.length === 0" class="no-tours">
+        <p>В данный момент нет доступных туров. Пожалуйста, загляните позже.</p>
+      </div>
+      <div v-else class="card-wrapper">
         <card 
           v-for="card in storeCards" 
           :key="card.id" 
@@ -141,6 +148,9 @@ const isPopTourOpen = ref(false)
 
 // Вычисляемое свойство для карточек из хранилища
 const storeCards = computed(() => store.cards)
+
+// Вычисляемое свойство для состояния загрузки
+const isLoading = computed(() => store.isLoading)
 
 // Обработчики событий
 const handleCardClick = (card) => {
@@ -547,4 +557,38 @@ section
     
   section
     margin-bottom: 60px
+
+// Стили для загрузки
+.loading-spinner
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 40px
+  
+  .spinner
+    width: 50px
+    height: 50px
+    border: 5px solid rgba(0, 0, 0, 0.1)
+    border-top-color: var(--color-primary)
+    border-radius: 50%
+    animation: spin 1s linear infinite
+    margin-bottom: 15px
+  
+  p
+    color: #666
+    font-size: 16px
+
+.no-tours
+  text-align: center
+  padding: 40px
+  color: #666
+  font-size: 16px
+  border: 1px dashed #ccc
+  border-radius: 8px
+  margin: 20px 0
+
+@keyframes spin
+  to
+    transform: rotate(360deg)
 </style>
