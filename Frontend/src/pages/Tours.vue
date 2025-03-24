@@ -129,10 +129,14 @@ const sortOption = ref('rating-desc')
 const isPopTourOpen = ref(false)
 
 // Получаем значение темы из URL параметров при загрузке страницы
-onMounted(async () => {
-  // Загружаем карточки туров, если они еще не загружены
+onMounted(() => {
+  // Проверка наличия данных в хранилище
   if (store.cards.length === 0) {
-    await store.getCards()
+    // Если данных нет - загружаем
+    store.getCards()
+  } else {
+    // Если данные уже есть, просто обновляем флаг загрузки
+    isLoading.value = false
   }
   
   // Устанавливаем фильтр из URL, если он есть

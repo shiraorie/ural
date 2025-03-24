@@ -173,8 +173,12 @@ const showThemeTours = (theme) => {
 }
 
 // Получение данных при монтировании компонента
-onMounted(async () => {
-  await store.getCards()
+onMounted(() => {
+  // Карточки уже должны быть загружены в хранилище
+  // Если по какой-то причине данных нет, загружаем их
+  if (store.cards.length === 0) {
+    store.getCards()
+  }
 })
 </script>
 
