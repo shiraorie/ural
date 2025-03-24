@@ -148,12 +148,14 @@ onMounted(async () => {
   })
   
   try {
-    // Загружаем карточки, если их еще нет
+    // Принудительно загружаем карточки
     await store.getCards()
+    console.log('Карточки загружены:', store.cards.length)
     
     // Устанавливаем фильтр из URL, если он есть
     if (route.query.theme) {
       selectedTheme.value = route.query.theme
+      console.log('Установлена тема из URL:', selectedTheme.value)
     }
   } catch (error) {
     console.error('Ошибка при загрузке карточек:', error)
@@ -214,12 +216,24 @@ const isLoading = computed(() => store.isLoading)
 
 // Фильтрация и сортировка карточек
 const filteredCards = computed(() => {
+  console.log('Вычисление filteredCards:', {
+    storeCardsLength: store.cards.length,
+    isLoading: store.isLoading,
+    selectedTheme: selectedTheme.value
+  })
+
+  if (!store.cards || store.cards.length === 0) {
+    console.log('Карточки отсутствуют в store')
+    return []
+  }
+
   let result = [...store.cards]
+  console.log('Исходные карточки:', result)
   
   // Применяем фильтр по теме
   if (selectedTheme.value !== 'all') {
+    console.log('Применяем фильтр по теме:', selectedTheme.value)
     // В реальном проекте здесь будет фильтрация по соответствующей теме
-    // Сейчас для демонстрации просто используем первые несколько карточек для каждой темы
     switch(selectedTheme.value) {
       case 'nature':
         result = result.filter(card => 
@@ -243,9 +257,11 @@ const filteredCards = computed(() => {
         )
         break
     }
+    console.log('После фильтрации по теме:', result.length)
   }
   
   // Применяем сортировку
+  console.log('Применяем сортировку:', sortOption.value)
   switch(sortOption.value) {
     case 'price-asc':
       result.sort((a, b) => a.price - b.price)
@@ -258,6 +274,7 @@ const filteredCards = computed(() => {
       break
   }
   
+  console.log('Итоговый результат:', result.length)
   return result
 })
 </script>
