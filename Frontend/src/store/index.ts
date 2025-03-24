@@ -312,7 +312,8 @@ export const useCardsStore = defineStore('cards', () => {
   const getCards = async () => {
     console.log('getCards вызван, текущее состояние:', {
       cardsLength: cards.value.length,
-      isLoading: isLoading.value
+      isLoading: isLoading.value,
+      cards: cards.value
     })
     
     if (isLoading.value) {
@@ -322,9 +323,10 @@ export const useCardsStore = defineStore('cards', () => {
     
     try {
       isLoading.value = true
+      console.log('Начало загрузки карточек')
       
       // Если карточки еще не загружены, инициализируем их данными
-      if (cards.value.length === 0) {
+      if (!cards.value || cards.value.length === 0) {
         console.log('Инициализация данных в cards')
         const initialCards = [
           {
@@ -462,7 +464,7 @@ export const useCardsStore = defineStore('cards', () => {
         
         console.log('Данные инициализированы:', {
           cardsLength: cards.value.length,
-          firstCard: cards.value[0]
+          cards: cards.value
         })
       }
       
@@ -471,7 +473,8 @@ export const useCardsStore = defineStore('cards', () => {
       
       console.log('getCards завершен, данные:', {
         cardsLength: cards.value.length,
-        cards: cards.value
+        cards: cards.value,
+        isLoading: isLoading.value
       })
       
       return cards.value

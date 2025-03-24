@@ -27,23 +27,28 @@ const props = defineProps({
     },
     image: {
         type: String,
-        required: true
+        required: true,
+        default: 'https://via.placeholder.com/300x200'
     },
     title: {
         type: String,
-        required: true
+        required: true,
+        default: 'Название тура'
     },
     rating: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     location: {
         type: String,
-        required: true
+        required: true,
+        default: 'Локация не указана'
     },
     price: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     priceUnit: {
         type: String,
@@ -53,11 +58,12 @@ const props = defineProps({
 
 // Добавляем логирование пропсов при монтировании компонента
 onMounted(() => {
-    console.log('Card mounted:', {
+    console.log('Card mounted with props:', {
         title: props.title,
         price: props.price,
         rating: props.rating,
-        location: props.location
+        location: props.location,
+        image: props.image
     })
 })
 </script>

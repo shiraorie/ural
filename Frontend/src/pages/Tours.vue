@@ -72,7 +72,7 @@
           <div class="spinner"></div>
           <p>Загрузка туров...</p>
         </div>
-        <div v-else-if="filteredCards.length === 0" class="no-results">
+        <div v-else-if="!filteredCards || filteredCards.length === 0" class="no-results">
           <img src="https://cdn.iconscout.com/icon/free/png-256/free-search-1767866-1502116.png" alt="Поиск" class="no-results-icon">
           <h3>Туры не найдены</h3>
           <p>Попробуйте изменить параметры фильтрации</p>
@@ -90,7 +90,7 @@
             </ul>
           </div>
           <transition-group name="card-fade">
-            <template v-for="card in filteredCards" :key="card.id">
+            <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
               <card 
                 :handleClick="() => handleCardClick(card)" 
                 :title="card.title" 
@@ -100,7 +100,7 @@
                 :price="card.price" 
                 :location="card.location" 
               />
-            </template>
+            </div>
           </transition-group>
         </div>
       </div>
@@ -231,11 +231,12 @@ const filteredCards = computed(() => {
   console.log('Вычисление filteredCards:', {
     storeCardsLength: store.cards.length,
     isLoading: store.isLoading,
-    selectedTheme: selectedTheme.value
+    selectedTheme: selectedTheme.value,
+    cards: store.cards
   })
 
-  if (!store.cards || store.cards.length === 0) {
-    console.log('Карточки отсутствуют в store')
+  if (!store.cards || !Array.isArray(store.cards) || store.cards.length === 0) {
+    console.log('Карточки отсутствуют в store или некорректный формат')
     return []
   }
 
@@ -286,7 +287,10 @@ const filteredCards = computed(() => {
       break
   }
   
-  console.log('Итоговый результат:', result.length)
+  console.log('Итоговый результат:', {
+    length: result.length,
+    cards: result
+  })
   return result
 })
 </script>
@@ -497,6 +501,7 @@ const filteredCards = computed(() => {
   display: grid
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
   gap: 30px
+  padding: 15px
 
 // Стили для загрузки и отсутствия результатов
 .loading, .no-results
@@ -660,6 +665,11 @@ const filteredCards = computed(() => {
 .card-fade-leave-to
   opacity: 0
   transform: translateY(30px)
+
+.card-wrapper
+  width: 100%
+  display: flex
+  justify-content: center
 
 // Медиа-запросы
 @media (max-width: 992px)
