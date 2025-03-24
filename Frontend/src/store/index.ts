@@ -449,18 +449,23 @@ export const useCardsStore = defineStore('cards', () => {
     try {
       isLoading.value = true
       
-      // Убедимся, что массив карточек инициализирован
-      // Для отладки используем таймаут, чтобы симулировать задержку сети
-      await new Promise(resolve => setTimeout(resolve, 500))
+      // Проверяем, есть ли уже данные
+      if (cards.value.length === 0) {
+        // Данные уже инициализированы в cards.value при создании store
+        console.log('Инициализация данных в cards')
+      }
+      
+      // Небольшая задержка для имитации загрузки
+      await new Promise(resolve => setTimeout(resolve, 300))
       
       console.log('getCards завершен, данные:', {
         cardsLength: cards.value.length,
-        isLoading: isLoading.value
+        isLoading: isLoading.value,
+        cards: cards.value
       })
-      
-      isLoading.value = false
     } catch (error) {
       console.error('Ошибка загрузки карточек:', error)
+    } finally {
       isLoading.value = false
     }
   }

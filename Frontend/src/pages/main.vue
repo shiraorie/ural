@@ -21,29 +21,23 @@
     <section class="tours-section">
       <h2 class="section-title">Популярные туры</h2>
       <div v-if="isLoading" class="loading-spinner">
-        <div class="spinner"></div>
-        <p>Загрузка туров...</p>
+        Загрузка туров...
       </div>
       <div v-else-if="!storeCards || storeCards.length === 0" class="no-tours">
-        <p>В данный момент нет доступных туров. Пожалуйста, загляните позже.</p>
+        Туры не найдены
       </div>
-      <div v-else class="card-wrapper">
-        <card 
-          v-for="card in storeCards.slice(0, 3)" 
-          :key="card.id" 
-          :handleClick="() => handleCardClick(card)" 
-          :title="card.title" 
-          :description="card.description" 
-          :image="card.image" 
-          :rating="card.rating" 
-          :price="card.price" 
-          :location="card.location" 
+      <div v-else class="tours-grid">
+        <Card
+          v-for="card in storeCards"
+          :key="card.id"
+          :image="card.image"
+          :title="card.title"
+          :rating="card.rating"
+          :location="card.location"
+          :price="card.price"
+          :handleClick="() => handleCardClick(card)"
         />
       </div>
-      <!-- <div class="debug-info" style="margin-top: 20px; font-size: 12px; color: #999;">
-        Карточек в хранилище: {{ storeCards ? storeCards.length : 0 }} | 
-        Статус загрузки: {{ isLoading ? 'Загрузка...' : 'Завершено' }}
-      </div> -->
       <div class="button-container" v-if="storeCards && storeCards.length > 0">
         <router-link to="/tours" class="view-all-button">Посмотреть все туры</router-link>
       </div>
@@ -142,7 +136,7 @@ import { useRouter } from 'vue-router'
 // Импорт компонентов
 import sectionWher from '@/ui/sectionWher.vue'
 import email from '@/ui/email.vue'
-import card from '@/ui/card.vue'
+import Card from '@/ui/card.vue'
 import carousel from '@/pages/carousel.vue'
 import popTour from '@/ui/popTour.vue'
 
@@ -155,7 +149,7 @@ const isPopTourOpen = ref(false)
 
 // Вычисляемое свойство для карточек из хранилища
 const storeCards = computed(() => {
-  console.log('Карточки из хранилища:', store.cards)
+  console.log('Получение карточек:', store.cards)
   return store.cards
 })
 
@@ -189,16 +183,12 @@ const showThemeTours = (theme) => {
 
 // Получение данных при монтировании компонента
 onMounted(async () => {
-  console.log('main.vue - onMounted', {
-    cardsLength: store.cards.length,
-    isLoading: store.isLoading
-  })
-  
-  // Принудительная загрузка карточек
-  await store.getCards()
-  
-  console.log('После загрузки карточек:', {
-    cardsLength: store.cards.length,
+  console.log('main.vue - onMounted начало')
+  if (!store.cards || store.cards.length === 0) {
+    await store.getCards()
+  }
+  console.log('main.vue - onMounted завершено:', {
+    cards: store.cards,
     isLoading: store.isLoading
   })
 })
@@ -339,11 +329,14 @@ section
     left: 0
 
 // Стили для карточек
-.card-wrapper 
-  display: flex
-  flex-wrap: wrap
-  gap: 30px
-  justify-content: center
+.tours-grid
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
+  gap: 2rem
+  padding: 1rem
+  
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
 
 // Тематические подборки
 .themed-tours-section
@@ -660,11 +653,11 @@ section
 
 // Медиа-запросы для адаптивности
 @media (max-width: 992px)
-  .card-wrapper
+  .tours-grid
     gap: 20px
 
 @media (max-width: 768px)
-  .card-wrapper
+  .tours-grid
     flex-direction: column
     align-items: center
     
@@ -673,37 +666,19 @@ section
 
 // Стили для загрузки
 .loading-spinner
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
-  padding: 40px
-  
-  .spinner
-    width: 50px
-    height: 50px
-    border: 5px solid rgba(0, 0, 0, 0.1)
-    border-top-color: var(--color-primary)
-    border-radius: 50%
-    animation: spin 1s linear infinite
-    margin-bottom: 15px
-  
-  p
-    color: #666
-    font-size: 16px
+  text-align: center
+  padding: 2rem
+  font-size: 1.2rem
+  color: #666
 
 .no-tours
   text-align: center
-  padding: 40px
+  padding: 2rem
+  font-size: 1.2rem
   color: #666
-  font-size: 16px
-  border: 1px dashed #ccc
+  background: #f5f5f5
   border-radius: 8px
-  margin: 20px 0
-
-@keyframes spin
-  to
-    transform: rotate(360deg)
+  margin: 1rem 0
 
 // Кнопка "Посмотреть все туры"
 .button-container
