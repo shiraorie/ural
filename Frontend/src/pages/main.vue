@@ -259,84 +259,54 @@ section
 
 .advantages-grid
   display: grid
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
   gap: 30px
+  padding: 0 15px
+  
+  @media (max-width: 992px)
+    grid-template-columns: repeat(2, 1fr)
+    gap: 20px
   
   @media (max-width: 768px)
     grid-template-columns: 1fr
-    max-width: 500px
-    margin: 0 auto
+    gap: 15px
 
 .advantage-card
   background: white
   border-radius: 16px
-  padding: 35px
+  padding: 30px 25px
   text-align: center
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05)
-  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)
-  border: 1px solid rgba(0, 0, 0, 0.02)
-  position: relative
-  z-index: 1
-  overflow: hidden
+  transition: all 0.3s ease
   
-  &::before
-    content: ''
-    position: absolute
-    z-index: -1
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    background: linear-gradient(45deg, rgba(var(--color-primary-rgb), 0.1), rgba(var(--color-primary-rgb), 0.03))
-    transform: scaleX(0)
-    transform-origin: 0 50%
-    transition: transform 0.5s ease-out
+  @media (max-width: 768px)
+    padding: 25px 20px
   
   &:hover
-    transform: translateY(-15px)
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1)
-    
-    &::before
-      transform: scaleX(1)
+    transform: translateY(-10px)
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1)
   
   .advantage-icon
-    font-size: 52px
-    margin-bottom: 25px
-    transition: transform 0.3s ease
+    font-size: 48px
+    margin-bottom: 20px
     
-    &:hover
-      transform: scale(1.2) rotate(5deg)
-  
-  h3
-    color: #2c3e50
-    margin-bottom: 15px
-    font-size: 22px
-    position: relative
-    display: inline-block
-    
-    &::after
-      content: ''
-      position: absolute
-      width: 0
-      height: 2px
-      bottom: -4px
-      left: 50%
-      background-color: var(--color-primary)
-      transition: all 0.3s ease
-    
-  &:hover h3::after
-    width: 100%
-    left: 0
+    @media (max-width: 768px)
+      font-size: 40px
 
 // Стили для карточек
 .tours-grid
   display: grid
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
-  gap: 2rem
-  padding: 1rem
+  gap: 30px
+  padding: 15px
+  
+  @media (max-width: 992px)
+    grid-template-columns: repeat(2, 1fr)
+    gap: 20px
   
   @media (max-width: 768px)
     grid-template-columns: 1fr
+    gap: 15px
 
 // Тематические подборки
 .themed-tours-section
@@ -349,18 +319,21 @@ section
   display: grid
   grid-template-columns: repeat(3, 1fr)
   gap: 30px
+  padding: 0 15px
   
   @media (max-width: 992px)
     grid-template-columns: repeat(2, 1fr)
+    gap: 20px
   
-  @media (max-width: 768px)
+  @media (max-width: 576px)
     grid-template-columns: 1fr
+    gap: 15px
 
 .themed-tour
   position: relative
   border-radius: 16px
   overflow: hidden
-  height: 280px
+  height: 250px
   cursor: pointer
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
   transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)
@@ -375,6 +348,9 @@ section
     
     img
       transform: scale(1.1)
+
+  @media (max-width: 768px)
+    height: 200px
 
 .themed-tour-content
   position: absolute
@@ -432,22 +408,13 @@ section
   
   @media (max-width: 992px)
     flex-direction: column
-
-.info-image
-  flex: 1
-  min-height: 450px
-  position: relative
-  overflow: hidden
   
-  &:before
-    content: ""
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0))
-    z-index: 1
+  .info-image
+    @media (max-width: 992px)
+      min-height: 300px
+    
+    @media (max-width: 768px)
+      min-height: 250px
   
   img
     width: 100%
@@ -463,7 +430,7 @@ section
   padding: 50px
   
   @media (max-width: 768px)
-    padding: 30px
+    padding: 30px 20px
   
   h2
     margin-top: 0
@@ -653,16 +620,35 @@ section
 
 // Медиа-запросы для адаптивности
 @media (max-width: 992px)
-  .tours-grid
-    gap: 20px
-
-@media (max-width: 768px)
-  .tours-grid
-    flex-direction: column
-    align-items: center
-    
+  .section-title
+    font-size: 28px
+    margin-bottom: 30px
+  
   section
     margin-bottom: 60px
+
+@media (max-width: 768px)
+  .section-title
+    font-size: 24px
+    margin-bottom: 25px
+  
+  section
+    margin-bottom: 50px
+  
+  .container
+    padding: 0 10px
+
+@media (max-width: 576px)
+  .section-title
+    font-size: 22px
+    margin-bottom: 20px
+  
+  .advantage-card
+    h3
+      font-size: 20px
+    
+    p
+      font-size: 14px
 
 // Стили для загрузки
 .loading-spinner
@@ -687,7 +673,7 @@ section
 
 .view-all-button
   display: inline-block
-  background: linear-gradient(45deg, var(--color-primary), #e6d595)
+  background: linear-gradient(45deg, #e6d595, #f0e5b5)
   color: #000
   border: none
   padding: 14px 34px
@@ -695,26 +681,14 @@ section
   font-size: 16px
   font-weight: 600
   text-decoration: none
-  transition: all 0.4s
-  position: relative
-  overflow: hidden
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1)
-  z-index: 1
-  
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: -100%
-    width: 100%
-    height: 100%
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
-    transition: left 0.7s ease
+  transition: all 0.3s ease
+  box-shadow: 0 5px 15px rgba(230, 213, 149, 0.2)
   
   &:hover
     transform: translateY(-5px)
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15)
-    
-    &::before
-      left: 100%
+    box-shadow: 0 10px 25px rgba(230, 213, 149, 0.3)
+  
+  @media (max-width: 768px)
+    padding: 12px 28px
+    font-size: 15px
 </style>

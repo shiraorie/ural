@@ -365,34 +365,21 @@ const filteredCards = computed(() => {
   position: relative
   overflow: hidden
   
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: -100%
-    width: 100%
-    height: 100%
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)
-    transition: left 0.7s ease
-  
   &:hover
     background-color: #f5f5f5
     transform: translateY(-3px)
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08)
-    
-    &::before
-      left: 100%
   
   &.active
-    background-color: var(--color-primary)
+    background-color: #e6d595
     color: #000
-    border-color: var(--color-primary)
-    box-shadow: 0 5px 15px rgba(var(--color-primary-rgb), 0.3)
+    border-color: #e6d595
+    box-shadow: 0 5px 15px rgba(230, 213, 149, 0.3)
     font-weight: 600
     
     &:hover
       transform: translateY(-3px)
-      box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.4)
+      box-shadow: 0 8px 20px rgba(230, 213, 149, 0.4)
 
 .select-wrapper
   position: relative
@@ -547,7 +534,7 @@ const filteredCards = computed(() => {
 
 // Секция с контактами
 .contact-section
-  background: linear-gradient(135deg, var(--color-primary), #e6d595)
+  background: linear-gradient(135deg, #e6d595, #f0e5b5)
   padding: 70px 0
   margin-top: 70px
   position: relative
@@ -644,42 +631,77 @@ const filteredCards = computed(() => {
     font-size: 40px
   
   .filters
-    padding: 20px
+    padding: 15px
+  
+  .filter-group
+    min-width: 100%
+  
+  .filter-button
+    font-size: 14px
+    padding: 10px 16px
+  
+  .tours-grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: 20px
+    padding: 10px
 
 @media (max-width: 768px)
   .banner
-    height: 250px
-  
+    height: 200px
+    
   .page-title
-    font-size: 32px
+    font-size: 28px
+    padding: 0 15px
   
   .page-subtitle
     font-size: 16px
+    padding: 0 20px
   
-  .filters
-    flex-direction: column
-    gap: 25px
+  .filters-wrapper
+    margin-bottom: 20px
   
-  .contact-section
-    .contact-content
-      h2
-        font-size: 28px
-      
-      p
-        font-size: 16px
-
-@media (max-width: 480px)
-  .banner
-    height: 220px
-  
-  .page-title
-    font-size: 28px
-    margin-bottom: 10px
-  
-  .filter-button
-    padding: 8px 14px
-    font-size: 14px
+  .filter-options
+    flex-wrap: wrap
+    justify-content: center
   
   .tours-grid
     grid-template-columns: 1fr
+    gap: 15px
+    padding: 10px
+  
+  .contact-section
+    padding: 40px 0
+    
+    .contact-content
+      padding: 0 20px
+      
+      h2
+        font-size: 24px
+      
+      p
+        font-size: 16px
+        margin-bottom: 25px
+
+@media (max-width: 480px)
+  .banner
+    height: 180px
+  
+  .page-title
+    font-size: 24px
+  
+  .filter-button
+    padding: 8px 12px
+    font-size: 13px
+  
+  .sort-select
+    font-size: 14px
+    padding: 10px
+  
+  .results-info
+    font-size: 14px
+    
+  .contact-section
+    .contact-button
+      padding: 12px 24px
+      font-size: 15px
 </style> 
