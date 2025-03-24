@@ -134,27 +134,43 @@ const decrementPersons = () => {
 }
 
 const handlePayment = () => {
-    console.log('Вызвана функция оплаты, данные тура:', props.title, 'ID:', props.id || (store.selectedTour ? store.selectedTour.id : 'не определен'))
+    // Определяем ID тура из доступных источников с проверкой на валидность
+    let tourId = null;
+    if (props.id && typeof props.id === 'number') {
+        tourId = props.id;
+    } else if (store.selectedTour && store.selectedTour.id) {
+        tourId = store.selectedTour.id;
+    } else {
+        // Если ID не найден, используем хоть какую-то информацию для демонстрации
+        tourId = 1;
+    }
+    
+    console.log('Вызвана функция оплаты:', {
+        tourId,
+        title: props.title,
+        price: props.price,
+        participants: persons.value
+    });
     
     // Создаем объект с данными для страницы оплаты
     const paymentData = {
-        tourId: props.id || (store.selectedTour ? store.selectedTour.id : 1),
+        tourId,
         tourTitle: props.title,
         tourPrice: props.price,
         participants: persons.value,
         date: new Date().toISOString().split('T')[0]
-    }
+    };
     
-    console.log('Данные для передачи на страницу оплаты:', paymentData)
+    console.log('Данные для передачи на страницу оплаты:', paymentData);
     
     // Закрываем модальное окно перед переходом
-    emit('close')
+    emit('close');
     
     // Переходим на страницу оплаты с параметрами
     router.push({
         path: '/payment',
         query: paymentData
-    })
+    });
 }
 </script>
 
@@ -179,65 +195,75 @@ const handlePayment = () => {
     to
         opacity: 1
 
+.tour-card
+    background: white
+    border-radius: 16px
+    overflow: hidden
+    width: 90%
+    max-width: 1000px
+    height: 90vh
+    max-height: 800px
+    display: flex
+    flex-direction: column
+    position: relative
+    animation: slideUp 0.4s ease-out forwards
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1)
+    
+    @media (min-width: 768px)
+        flex-direction: row
+        height: auto
+        max-height: 90vh
+
+@keyframes slideUp
+    from
+        opacity: 0
+        transform: translateY(30px)
+    to
+        opacity: 1
+        transform: translateY(0)
+
 .close-btn
     position: absolute
-    top: 16px
-    right: 16px
-    background: rgba(255, 255, 255, 0.8)
+    right: 15px
+    top: 15px
+    background: rgba(255, 255, 255, 0.9)
     border: none
-    color: #333
-    font-size: 32px
-    cursor: pointer
-    z-index: 10
     width: 40px
     height: 40px
+    font-size: 24px
     border-radius: 50%
     display: flex
     align-items: center
     justify-content: center
+    cursor: pointer
+    z-index: 10
     transition: all 0.3s ease
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1)
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)
+    color: #2c3e50
     
     &:hover
         background: white
         transform: rotate(90deg)
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2)
-
-.tour-card
-    position: relative
-    background: #fff
-    border-radius: 20px
-    overflow: hidden
-    box-shadow: 0 8px 42px rgba(0,0,0,0.2)
-    width: 90%
-    max-width: 1000px
-    max-height: 90vh
-    margin: 20px
-    display: flex
-    flex-direction: column
-    transform: translateY(0)
-    animation: popIn 0.5s ease-out forwards
-
-@keyframes popIn
-    0%
-        opacity: 0
-        transform: translateY(30px) scale(0.95)
-    100%
-        opacity: 1
-        transform: translateY(0) scale(1)
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15)
 
 .tour-card__gallery
+    flex: 1
+    min-height: 300px
     position: relative
-    height: 50vh
+    overflow: hidden
     
-    @media (max-width: 768px)
-        height: 35vh
-
-.tour-card__image
-    width: 100%
-    height: 100%
-    object-fit: cover
-    transition: transform 0.8s ease
+    @media (min-width: 768px)
+        flex: 1
+        max-width: 50%
+    
+    .tour-card__image
+        width: 100%
+        height: 100%
+        object-fit: cover
+        transition: transform 0.5s ease
+    
+    &:hover .tour-card__image
+        transform: scale(1.05)
 
 .gallery-btn
     position: absolute
@@ -245,21 +271,21 @@ const handlePayment = () => {
     transform: translateY(-50%)
     background: rgba(255, 255, 255, 0.8)
     border: none
-    width: 50px
-    height: 50px
+    width: 40px
+    height: 40px
     border-radius: 50%
-    font-size: 24px
+    font-size: 20px
     display: flex
     align-items: center
     justify-content: center
     cursor: pointer
-    z-index: 2
-    transition: all 0.3s ease
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1)
+    transition: all 0.3s
+    z-index: 5
     
     &:hover
         background: white
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2)
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1)
+        transform: translateY(-50%) scale(1.1)
     
     &--prev
         left: 20px
@@ -268,54 +294,51 @@ const handlePayment = () => {
         right: 20px
 
 .tour-card__content
-    padding: 32px
-    overflow-y: auto
     flex: 1
+    padding: 30px
+    overflow-y: auto
+    display: flex
+    flex-direction: column
     
-    @media (max-width: 768px)
-        padding: 20px
-
+    @media (min-width: 768px)
+        max-width: 50%
+        
 .tour-card__header
     display: flex
     justify-content: space-between
     align-items: center
-    margin-bottom: 24px
-    position: relative
+    margin-bottom: 20px
     
-    &::after
-        content: ''
-        position: absolute
-        bottom: -12px
-        left: 0
-        width: 80px
-        height: 3px
-        background-color: var(--color-primary)
-        border-radius: 2px
-
-.tour-card__title
-    font-size: 32px
-    font-weight: 700
-    color: #2c3e50
-    margin: 0
+    .tour-card__title
+        font-size: 24px
+        font-weight: 700
+        color: #2c3e50
+        margin: 0
+        position: relative
+        
+        &::after
+            content: ''
+            position: absolute
+            bottom: -8px
+            left: 0
+            width: 60px
+            height: 3px
+            background: var(--color-primary)
+            border-radius: 3px
     
-    @media (max-width: 768px)
-        font-size: 26px
-
-.tour-card__rating
-    font-size: 24px
-    color: #ffd700
-    font-weight: 600
-    padding: 5px 12px
-    background: rgba(255, 215, 0, 0.1)
-    border-radius: 30px
-    display: flex
-    align-items: center
+    .tour-card__rating
+        background: rgba(var(--color-primary-rgb), 0.1)
+        color: var(--color-primary)
+        padding: 5px 10px
+        border-radius: 30px
+        font-weight: 600
+        font-size: 16px
 
 .tour-card__description
-    margin-bottom: 28px
-    line-height: 1.8
     color: #34495e
-    font-size: 17px
+    line-height: 1.6
+    margin-bottom: 25px
+    font-size: 16px
 
 .tour-card__includes
     margin-bottom: 32px
@@ -415,27 +438,27 @@ const handlePayment = () => {
         box-shadow: 0 2px 8px rgba(0,0,0,0.05)
         
         button
-            background: white
+            background: #f8f9fa
             border: none
             width: 42px
             height: 42px
             font-size: 18px
+            font-weight: 600
             cursor: pointer
-            transition: all 0.3s
+            transition: all 0.2s
             
             &:hover:not(:disabled)
-                background-color: #f5f5f5
+                background: #e9ecef
             
             &:disabled
-                color: #ccc
+                color: #adb5bd
                 cursor: not-allowed
         
         span
-            flex: 1
-            text-align: center
+            padding: 0 15px
             font-size: 18px
             font-weight: 600
-            padding: 0 15px
+            color: #2c3e50
 
 .tour-card__total
     margin-bottom: 20px
@@ -447,7 +470,7 @@ const handlePayment = () => {
 .tour-card__button
     width: 100%
     padding: 16px
-    background: linear-gradient(to right, #3498db, #2980b9)
+    background: linear-gradient(135deg, #e6d595, #f0e5b5)
     color: white
     border: none
     border-radius: 10px
@@ -457,24 +480,30 @@ const handlePayment = () => {
     transition: all 0.3s
     position: relative
     overflow: hidden
-    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3)
+    margin-top: 20px
+    box-shadow: 0 5px 15px rgba(230, 213, 149, 0.2)
+    
+    &:hover
+        transform: translateY(-3px)
+        box-shadow: 0 10px 25px rgba(230, 213, 149, 0.3)
+    
+    &:active
+        transform: translateY(0)
+        box-shadow: 0 5px 15px rgba(230, 213, 149, 0.2)
     
     &::before
         content: ''
         position: absolute
-        top: 0
-        left: -100%
-        width: 100%
+        width: 100px
         height: 100%
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
-        transition: left 0.7s ease
+        background: rgba(255, 255, 255, 0.3)
+        top: 0
+        left: -150px
+        transform: skewX(-20deg)
+        transition: all 0.7s ease
     
-    &:hover
-        transform: translateY(-5px)
-        box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4)
-        
-        &::before
-            left: 100%
+    &:hover::before
+        left: 100%
 
 .tour-card__indicators
     position: absolute

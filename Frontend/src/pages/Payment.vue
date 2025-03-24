@@ -3,7 +3,30 @@
     <div class="container">
       <h1 class="page-title">Оплата бронирования</h1>
       
-      <div class="payment-content">
+      <div v-if="isPaymentSuccessful" class="payment-success">
+        <div class="success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h2>Оплата прошла успешно!</h2>
+        <p class="success-message">
+          Спасибо за ваш заказ. Информация о бронировании была отправлена на ваш email.
+        </p>
+        <div class="booking-details">
+          <p><strong>Номер заказа:</strong> #{{ Math.floor(Math.random() * 1000000).toString().padStart(6, '0') }}</p>
+          <p><strong>Тур:</strong> {{ selectedTour?.title || 'Неизвестный тур' }}</p>
+          <p><strong>Дата:</strong> {{ formatDate(orderDetails.date) }}</p>
+          <p><strong>Количество человек:</strong> {{ orderDetails.participants }}</p>
+          <p><strong>Сумма:</strong> {{ formatPrice(totalPrice) }}</p>
+        </div>
+        <div class="success-actions">
+          <a href="/" class="home-button">Вернуться на главную</a>
+        </div>
+      </div>
+      
+      <div v-else class="payment-content">
         <div class="order-summary">
           <h2>Информация о заказе</h2>
           <div v-if="selectedTour" class="order-details">
@@ -134,9 +157,17 @@
                 <label for="save-card">Сохранить карту для будущих платежей</label>
               </div>
               
-              <button class="pay-button" @click="processPayment" :disabled="isProcessing">
-                <span v-if="!isProcessing">Оплатить {{ formatPrice(totalPrice) }}</span>
-                <span v-else class="loader"></span>
+              <button 
+                class="pay-button" 
+                @click="processPayment" 
+                :disabled="isProcessing">
+                <span v-if="isProcessing">
+                  <span class="loader"></span>
+                  Обработка...
+                </span>
+                <span v-else>
+                  Оплатить {{ formatPrice(totalPrice) }}
+                </span>
               </button>
               
               <div class="secure-info">
@@ -385,21 +416,35 @@ const validateAllFields = () => {
 
 // Обработка платежа
 const processPayment = () => {
+  // Проверка валидности формы
+  validateAllFields()
+  
   if (!validateAllFields()) {
     return
   }
   
+  // Имитация процесса оплаты
   isProcessing.value = true
   
-  // Имитация API запроса на обработку платежа
   setTimeout(() => {
     isProcessing.value = false
     paymentComplete.value = true
     
-    // Генерация случайного номера бронирования
-    bookingNumber.value = 'BK' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
+    // Сохраняем информацию о заказе в localStorage для примера
+    const orderInfo = {
+      tourId: orderDetails.value.tourId,
+      tourTitle: selectedTour.value?.title || 'Неизвестный тур',
+      totalPrice: totalPrice.value,
+      date: orderDetails.value.date,
+      participants: orderDetails.value.participants,
+      orderId: Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
+    }
     
-    // Можно добавить сохранение данных о заказе в store или отправку на сервер
+    try {
+      localStorage.setItem('lastOrder', JSON.stringify(orderInfo))
+    } catch (e) {
+      console.error('Не удалось сохранить данные о заказе:', e)
+    }
   }, 2000)
 }
 
@@ -418,8 +463,9 @@ onMounted(async () => {
 
 <style scoped lang="sass">
 .payment-page
-  padding: 40px 0
-  background-color: #f8f9fa
+  padding: 50px 0
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ef 100%)
+  min-height: 100vh
 
 .container
   max-width: 1200px
@@ -431,295 +477,380 @@ onMounted(async () => {
   margin-bottom: 30px
   font-size: 32px
   color: #2c3e50
+  font-weight: 700
+  position: relative
+  display: inline-block
+  left: 50%
+  transform: translateX(-50%)
   
-  @media (max-width: 768px)
-    font-size: 28px
+  &::after
+    content: ''
+    position: absolute
+    bottom: -10px
+    left: 0
+    width: 100px
+    height: 4px
+    background: var(--color-primary)
+    border-radius: 4px
+    left: 50%
+    transform: translateX(-50%)
 
 .payment-content
-  display: flex
+  display: grid
+  grid-template-columns: 1fr 1.5fr
   gap: 30px
-  align-items: flex-start
   
   @media (max-width: 992px)
-    flex-direction: column
-
-.order-summary, .payment-form
-  background: white
-  border-radius: 12px
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05)
-  padding: 24px
-  
-.order-summary
-  flex: 1
-
-.payment-form
-  flex: 1.5
-
-h2
-  margin-top: 0
-  margin-bottom: 20px
-  color: #2c3e50
-  font-size: 22px
-
-.order-details
-  display: flex
-  gap: 20px
-  
-  @media (max-width: 768px)
-    flex-direction: column
-
-.tour-image
-  flex: 0 0 160px
-  height: 160px
-  border-radius: 8px
-  overflow: hidden
-  
-  img
-    width: 100%
-    height: 100%
-    object-fit: cover
-
-.tour-info
-  flex: 1
-
-.tour-meta
-  display: flex
-  gap: 20px
-  margin: 10px 0
-  
-  .meta-item
-    display: flex
-    align-items: center
-    gap: 6px
-    color: #7f8c8d
-    font-size: 14px
+    grid-template-columns: 1fr
     
-    svg
-      color: #3498db
-
-.tour-price-details
-  margin-top: 20px
-  border-top: 1px solid #ecf0f1
-  padding-top: 20px
-
-.price-row
-  display: flex
-  justify-content: space-between
-  margin-bottom: 10px
-  font-size: 14px
-  color: #5d6d7e
+.order-summary
+  background: white
+  border-radius: 16px
+  overflow: hidden
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08)
+  transition: transform 0.3s, box-shadow 0.3s
   
-  &.discount
-    color: #e74c3c
-  
-  &.total
-    font-weight: 600
-    font-size: 18px
-    margin-top: 10px
-    padding-top: 10px
-    border-top: 1px solid #ecf0f1
+  h2
+    padding: 20px 25px
+    margin: 0
+    background: #f8f9fa
+    border-bottom: 1px solid #e9ecef
+    font-size: 22px
     color: #2c3e50
+    
+  .order-details
+    display: flex
+    flex-direction: column
+    
+    .tour-image
+      height: 200px
+      overflow: hidden
+      
+      img
+        width: 100%
+        height: 100%
+        object-fit: cover
+        transition: transform 0.5s
+        
+        &:hover
+          transform: scale(1.05)
+  
+  .tour-info
+    padding: 25px
+    
+    h3
+      margin: 0 0 20px
+      font-size: 20px
+      color: #2c3e50
+      
+  .tour-meta
+    display: flex
+    flex-wrap: wrap
+    gap: 15px
+    margin-bottom: 25px
+    
+    .meta-item
+      display: flex
+      align-items: center
+      font-size: 14px
+      color: #7f8c8d
+      
+      svg
+        margin-right: 8px
+        color: var(--color-primary)
+  
+  .tour-price-details
+    background: #f8f9fa
+    padding: 20px
+    border-radius: 10px
+    
+    .price-row
+      display: flex
+      justify-content: space-between
+      padding: 10px 0
+      font-size: 15px
+      color: #2c3e50
+      
+      &:not(:last-child)
+        border-bottom: 1px dashed #e9ecef
+      
+      &.discount
+        color: #e74c3c
+      
+      &.total
+        font-weight: 700
+        font-size: 18px
+        margin-top: 10px
+        padding-top: 15px
+        border-top: 2px solid #e9ecef
+        
+.payment-form
+  background: white
+  border-radius: 16px
+  overflow: hidden
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08)
+  
+  h2
+    padding: 20px 25px
+    margin: 0
+    background: #f8f9fa
+    border-bottom: 1px solid #e9ecef
+    font-size: 22px
+    color: #2c3e50
+  
+  .card-payment
+    padding: 25px
 
 .payment-methods
   display: flex
-  gap: 10px
-  margin-bottom: 20px
-
-.payment-method
-  padding: 12px 16px
-  border: 1px solid #ddd
-  border-radius: 8px
-  display: flex
-  align-items: center
-  gap: 10px
-  cursor: pointer
-  transition: all 0.3s
+  margin-bottom: 30px
+  border-bottom: 1px solid #e9ecef
+  padding-bottom: 20px
   
-  &.active
-    border-color: #3498db
-    background: rgba(52, 152, 219, 0.05)
-  
-  .method-icon
-    color: #3498db
-  
-  .method-name
-    font-weight: 500
+  .payment-method
+    display: flex
+    align-items: center
+    padding: 15px 20px
+    border-radius: 10px
+    background: #f8f9fa
+    cursor: pointer
+    transition: all 0.3s
+    
+    &.active
+      background: rgba(var(--color-primary-rgb), 0.1)
+      border: 2px solid var(--color-primary)
+      
+    .method-icon
+      margin-right: 10px
+      
+      svg
+        color: var(--color-primary)
+      
+    .method-name
+      font-weight: 600
+      color: #2c3e50
 
 .card-details
   .form-group
-    margin-bottom: 16px
+    margin-bottom: 25px
     
     label
       display: block
       margin-bottom: 8px
       font-size: 14px
-      color: #5d6d7e
+      color: #7f8c8d
+      font-weight: 500
     
-    input[type="text"], input[type="password"]
+    input[type="text"], 
+    input[type="password"]
       width: 100%
-      padding: 12px
-      border: 1px solid #ddd
-      border-radius: 8px
+      padding: 14px
+      border: 2px solid #e9ecef
+      border-radius: 10px
       font-size: 16px
+      transition: all 0.3s
       
       &:focus
         outline: none
-        border-color: #3498db
+        border-color: var(--color-primary)
+        box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1)
       
       &.invalid
         border-color: #e74c3c
-        background: rgba(231, 76, 60, 0.05)
+        
+    .error-message
+      color: #e74c3c
+      font-size: 12px
+      margin-top: 5px
+  
+  .form-row
+    display: flex
+    gap: 20px
     
-    &.checkbox
-      display: flex
-      align-items: center
-      gap: 8px
+    @media (max-width: 576px)
+      flex-direction: column
+      gap: 15px
+    
+    .form-group
+      flex: 1
+  
+  .checkbox
+    display: flex
+    align-items: center
+    
+    input[type="checkbox"]
+      margin-right: 10px
+      width: 18px
+      height: 18px
       
-      label
-        margin-bottom: 0
+    label
+      margin: 0
+      font-size: 14px
+      color: #2c3e50
+  
+  .pay-button
+    width: 100%
+    padding: 18px
+    background: linear-gradient(to right, #3498db, #2980b9)
+    color: white
+    border: none
+    border-radius: 10px
+    font-size: 18px
+    font-weight: 600
+    cursor: pointer
+    transition: all 0.3s
+    margin-top: 10px
+    position: relative
+    overflow: hidden
+    
+    &::before
+      content: ''
+      position: absolute
+      top: 0
+      left: -100%
+      width: 100%
+      height: 100%
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
+      transition: left 0.7s ease
+    
+    &:hover
+      transform: translateY(-3px)
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
       
-      input
-        cursor: pointer
-
-.form-row
-  display: flex
-  gap: 16px
+      &::before
+        left: 100%
+    
+    &:disabled
+      background: #bdc3c7
+      cursor: not-allowed
+    
+    .loader
+      display: inline-block
+      width: 20px
+      height: 20px
+      border: 3px solid rgba(255,255,255,0.3)
+      border-radius: 50%
+      border-top-color: white
+      animation: spin 1s linear infinite
   
-  .form-group
-    flex: 1
-
-.error-message
-  color: #e74c3c
-  font-size: 12px
-  margin-top: 4px
-  display: block
-
-.pay-button
-  width: 100%
-  padding: 14px
-  background: #2ecc71
-  color: white
-  border: none
-  border-radius: 8px
-  font-size: 16px
-  font-weight: 600
-  cursor: pointer
-  margin-top: 20px
-  transition: background 0.3s
-  display: flex
-  justify-content: center
-  align-items: center
+  .secure-info
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-top: 20px
+    font-size: 13px
+    color: #7f8c8d
+    
+    svg
+      margin-right: 8px
+      color: #27ae60
+      
+.payment-success
+  text-align: center
+  padding: 40px 25px
   
-  &:hover
-    background: #27ae60
+  .success-icon
+    display: flex
+    justify-content: center
+    margin-bottom: 25px
+    
+    svg
+      color: #2ecc71
+      
+  h2
+    font-size: 28px
+    margin-bottom: 15px
+    color: #2c3e50
+    background: none
+    border: none
+    padding: 0
+    
+  .success-message
+    font-size: 16px
+    color: #7f8c8d
+    margin-bottom: 30px
+    
+  .booking-details
+    background: #f8f9fa
+    padding: 20px
+    border-radius: 10px
+    text-align: left
+    margin-bottom: 30px
+    
+    p
+      margin: 10px 0
+      font-size: 15px
+      
+      strong
+        color: #2c3e50
+        
+  .success-actions
+    .home-button
+      display: inline-block
+      padding: 16px 36px
+      background: linear-gradient(to right, #3498db, #2980b9)
+      color: white
+      text-decoration: none
+      border-radius: 30px
+      font-weight: 600
+      transition: all 0.3s
+      position: relative
+      overflow: hidden
+      
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: -100%
+        width: 100%
+        height: 100%
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
+        transition: left 0.7s ease
+      
+      &:hover
+        transform: translateY(-3px)
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
+        
+        &::before
+          left: 100%
+          
+.no-tour-info
+  text-align: center
+  padding: 40px 20px
   
-  &:disabled
-    background: #95a5a6
-    cursor: not-allowed
-
-.secure-info
-  display: flex
-  align-items: center
-  gap: 8px
-  margin-top: 16px
-  color: #7f8c8d
-  font-size: 13px
-  justify-content: center
-
-// Лоадер для кнопки
-.loader
-  width: 20px
-  height: 20px
-  border: 2px solid rgba(255,255,255,0.3)
-  border-radius: 50%
-  border-top-color: white
-  animation: spin 1s ease-in-out infinite
-
+  .warning-icon
+    font-size: 60px
+    color: #e74c3c
+    margin-bottom: 25px
+    
+  h3
+    font-size: 24px
+    color: #2c3e50
+    margin-bottom: 15px
+    
+  p
+    color: #7f8c8d
+    font-size: 16px
+    margin-bottom: 25px
+    max-width: 600px
+    margin-left: auto
+    margin-right: auto
+    
+  .back-button
+    display: inline-block
+    padding: 14px 30px
+    background: linear-gradient(to right, #3498db, #2980b9)
+    color: white
+    text-decoration: none
+    border-radius: 30px
+    font-weight: 600
+    transition: all 0.3s
+    
+    &:hover
+      transform: translateY(-3px)
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
+      
 @keyframes spin
   to
     transform: rotate(360deg)
-
-// Успешная оплата
-.payment-success
-  text-align: center
-  padding: 20px
-
-.success-icon
-  color: #2ecc71
-  margin-bottom: 20px
-  
-  svg
-    animation: scaleUp 0.5s ease-out
-
-@keyframes scaleUp
-  0%
-    transform: scale(0)
-  70%
-    transform: scale(1.1)
-  100%
-    transform: scale(1)
-
-.success-message
-  margin-bottom: 30px
-  color: #5d6d7e
-  font-size: 18px
-
-.booking-details
-  text-align: left
-  background: #f8f9fa
-  padding: 20px
-  border-radius: 8px
-  margin-bottom: 30px
-  
-  p
-    margin: 8px 0
-    color: #2c3e50
-
-.success-actions
-  .home-button
-    display: inline-block
-    padding: 12px 24px
-    background: #3498db
-    color: white
-    text-decoration: none
-    border-radius: 30px
-    font-weight: 600
-    transition: background 0.3s
-    
-    &:hover
-      background: #2980b9
-
-.no-tour-info
-  text-align: center
-  padding: 20px
-  border-radius: 8px
-  background: white
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05)
-  
-  .warning-icon
-    font-size: 48px
-    color: #e74c3c
-    margin-bottom: 20px
-
-  h3
-    margin-bottom: 10px
-    font-size: 22px
-    color: #2c3e50
-
-  p
-    margin-bottom: 20px
-    color: #5d6d7e
-
-  .back-button
-    display: inline-block
-    padding: 12px 24px
-    background: #3498db
-    color: white
-    text-decoration: none
-    border-radius: 30px
-    font-weight: 600
-    transition: background 0.3s
-    
-    &:hover
-      background: #2980b9
 </style>
