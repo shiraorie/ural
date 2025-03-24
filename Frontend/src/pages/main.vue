@@ -29,7 +29,7 @@
       </div>
       <div v-else class="card-wrapper">
         <card 
-          v-for="card in storeCards" 
+          v-for="card in storeCards.slice(0, 3)" 
           :key="card.id" 
           :handleClick="() => handleCardClick(card)" 
           :title="card.title" 
@@ -39,6 +39,9 @@
           :price="card.price" 
           :location="card.location" 
         />
+      </div>
+      <div class="button-container" v-if="storeCards.length > 0">
+        <router-link to="/tours" class="view-all-button">Посмотреть все туры</router-link>
       </div>
     </section>
 
@@ -595,4 +598,26 @@ section
 @keyframes spin
   to
     transform: rotate(360deg)
+
+// Кнопка "Посмотреть все туры"
+.button-container
+  text-align: center
+  margin-top: 30px
+
+.view-all-button
+  display: inline-block
+  background-color: var(--color-primary)
+  color: black
+  border: none
+  padding: 12px 30px
+  border-radius: 30px
+  font-size: 16px
+  font-weight: 600
+  text-decoration: none
+  transition: all 0.3s
+  
+  &:hover
+    transform: translateY(-3px)
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
+    background-color: #d4c78c
 </style>
