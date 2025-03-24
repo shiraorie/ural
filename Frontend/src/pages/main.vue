@@ -185,7 +185,14 @@ const showThemeTours = (theme) => {
 onMounted(async () => {
   console.log('main.vue - onMounted начало')
   try {
-    await store.getCards()
+    // Загружаем карточки, если их еще нет
+    if (store.cards.length === 0) {
+      await store.getCards()
+      console.log('Карточки загружены:', {
+        cardsLength: store.cards.length,
+        isLoading: store.isLoading
+      })
+    }
   } catch (error) {
     console.error('Ошибка при загрузке карточек:', error)
   }

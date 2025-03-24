@@ -18,7 +18,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { onMounted } from 'vue'
+
+const props = defineProps({
     handleClick: {
         type: Function,
         required: true
@@ -47,6 +49,16 @@ defineProps({
         type: String,
         default: 'Человек'
     }
+})
+
+// Добавляем логирование пропсов при монтировании компонента
+onMounted(() => {
+    console.log('Card mounted:', {
+        title: props.title,
+        price: props.price,
+        rating: props.rating,
+        location: props.location
+    })
 })
 </script>
 

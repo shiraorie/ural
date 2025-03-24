@@ -1,7 +1,5 @@
-import { createPinia, defineStore } from 'pinia'
+import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
-const pinia = createPinia()
 
 // Интерфейсы для карточек туров
 export interface ICard {
@@ -93,7 +91,7 @@ export interface ICompanyAdvantage {
 
 export const useCardsStore = defineStore('cards', () => {
   // Карточки туров
-  const cards = ref<ICard[]>([])  // Инициализируем пустым массивом
+  const cards = ref<ICard[]>([])
   const isLoading = ref(false)
   const selectedTour = ref<ICard | null>(null)
   
@@ -328,7 +326,7 @@ export const useCardsStore = defineStore('cards', () => {
       // Если карточки еще не загружены, инициализируем их данными
       if (cards.value.length === 0) {
         console.log('Инициализация данных в cards')
-        cards.value = [
+        const initialCards = [
           {
             id: 1,
             title: 'Природа Южного Урала',
@@ -458,7 +456,18 @@ export const useCardsStore = defineStore('cards', () => {
             ]
           }
         ]
+        
+        // Устанавливаем карточки в store
+        cards.value = initialCards
+        
+        console.log('Данные инициализированы:', {
+          cardsLength: cards.value.length,
+          firstCard: cards.value[0]
+        })
       }
+      
+      // Небольшая задержка для имитации загрузки
+      await new Promise(resolve => setTimeout(resolve, 300))
       
       console.log('getCards завершен, данные:', {
         cardsLength: cards.value.length,
@@ -558,4 +567,4 @@ export const useCardsStore = defineStore('cards', () => {
   }
 })
 
-export default pinia 
+export default useCardsStore 

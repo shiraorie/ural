@@ -79,18 +79,28 @@
           <button class="reset-filters" @click="selectTheme('all')">Сбросить фильтры</button>
         </div>
         <div v-else class="tours-grid">
+          <div class="debug-info" style="grid-column: 1/-1; margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+            <p>Отладочная информация:</p>
+            <ul>
+              <li>Количество карточек в store: {{ store.cards.length }}</li>
+              <li>Количество отфильтрованных карточек: {{ filteredCards.length }}</li>
+              <li>Выбранная тема: {{ selectedTheme }}</li>
+              <li>Сортировка: {{ sortOption }}</li>
+              <li>Состояние загрузки: {{ isLoading }}</li>
+            </ul>
+          </div>
           <transition-group name="card-fade">
-            <card 
-              v-for="card in filteredCards" 
-              :key="card.id" 
-              :handleClick="() => handleCardClick(card)" 
-              :title="card.title" 
-              :description="card.description" 
-              :image="card.image" 
-              :rating="card.rating" 
-              :price="card.price" 
-              :location="card.location" 
-            />
+            <template v-for="card in filteredCards" :key="card.id">
+              <card 
+                :handleClick="() => handleCardClick(card)" 
+                :title="card.title" 
+                :description="card.description" 
+                :image="card.image" 
+                :rating="card.rating" 
+                :price="card.price" 
+                :location="card.location" 
+              />
+            </template>
           </transition-group>
         </div>
       </div>
@@ -148,9 +158,11 @@ onMounted(async () => {
   })
   
   try {
-    // Принудительно загружаем карточки
-    await store.getCards()
-    console.log('Карточки загружены:', store.cards.length)
+    // Загружаем карточки, если их еще нет
+    if (store.cards.length === 0) {
+      await store.getCards()
+      console.log('Карточки загружены:', store.cards.length)
+    }
     
     // Устанавливаем фильтр из URL, если он есть
     if (route.query.theme) {
