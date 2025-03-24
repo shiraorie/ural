@@ -142,26 +142,33 @@ const selectedTour = ref(null)
 
 // Получаем значение темы из URL параметров при загрузке страницы
 onMounted(async () => {
-  console.log('Tours.vue - onMounted', {
+  console.log('Tours.vue - onMounted начало:', {
     cardsLength: store.cards.length,
     isLoading: store.isLoading
   })
   
-  // Принудительная загрузка карточек
-  await store.getCards()
-  console.log('После загрузки карточек:', {
-    cardsLength: store.cards.length,
-    isLoading: store.isLoading
-  })
-  
-  // Устанавливаем фильтр из URL, если он есть
-  if (route.query.theme) {
-    selectedTheme.value = route.query.theme
+  try {
+    // Загружаем карточки, если их еще нет
+    await store.getCards()
+    
+    // Устанавливаем фильтр из URL, если он есть
+    if (route.query.theme) {
+      selectedTheme.value = route.query.theme
+    }
+  } catch (error) {
+    console.error('Ошибка при загрузке карточек:', error)
   }
+  
+  console.log('Tours.vue - onMounted завершено:', {
+    cardsLength: store.cards.length,
+    isLoading: store.isLoading,
+    selectedTheme: selectedTheme.value
+  })
 })
 
 // Следим за изменением фильтра в URL
 watch(() => route.query.theme, (newTheme) => {
+  console.log('Изменение темы в URL:', newTheme)
   if (newTheme) {
     selectedTheme.value = newTheme
   } else {

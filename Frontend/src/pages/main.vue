@@ -149,15 +149,15 @@ const isPopTourOpen = ref(false)
 
 // Вычисляемое свойство для карточек из хранилища
 const storeCards = computed(() => {
-  console.log('Получение карточек:', store.cards)
-  return store.cards
+  console.log('Получение карточек из store:', {
+    cardsLength: store.cards.length,
+    isLoading: store.isLoading
+  })
+  return store.cards.slice(0, 3) // Показываем только первые 3 карточки на главной
 })
 
 // Вычисляемое свойство для состояния загрузки
-const isLoading = computed(() => {
-  console.log('Состояние загрузки:', store.isLoading)
-  return store.isLoading
-})
+const isLoading = computed(() => store.isLoading)
 
 // Обработчики событий
 const handleCardClick = (card) => {
@@ -184,11 +184,13 @@ const showThemeTours = (theme) => {
 // Получение данных при монтировании компонента
 onMounted(async () => {
   console.log('main.vue - onMounted начало')
-  if (!store.cards || store.cards.length === 0) {
+  try {
     await store.getCards()
+  } catch (error) {
+    console.error('Ошибка при загрузке карточек:', error)
   }
   console.log('main.vue - onMounted завершено:', {
-    cards: store.cards,
+    cardsLength: store.cards.length,
     isLoading: store.isLoading
   })
 })
