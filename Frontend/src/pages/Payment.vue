@@ -8,7 +8,7 @@
           <h2>Информация о заказе</h2>
           <div v-if="selectedTour" class="order-details">
             <div class="tour-image">
-              <img :src="selectedTour.image" :alt="selectedTour.title">
+              <img :src="selectedTour.image || 'https://proza.ru/pics/2022/11/03/1598.jpg'" :alt="selectedTour.title">
             </div>
             <div class="tour-info">
               <h3>{{ selectedTour.title }}</h3>
@@ -22,7 +22,7 @@
                   </svg>
                   <span>{{ formatDate(orderDetails.date) }}</span>
                 </div>
-                <div class="meta-item">
+                <div class="meta-item" v-if="selectedTour.location">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
@@ -49,6 +49,12 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div v-else class="no-tour-info">
+            <div class="warning-icon">⚠️</div>
+            <h3>Информация о туре не найдена</h3>
+            <p>Не удалось загрузить данные о выбранном туре. Пожалуйста, вернитесь на страницу выбора туров и попробуйте снова.</p>
+            <router-link to="/tours" class="back-button">Вернуться к выбору туров</router-link>
           </div>
         </div>
         
@@ -178,10 +184,21 @@ const router = useRouter()
 
 // Данные заказа
 const orderDetails = ref({
-  tourId: route.query.tourId || null,
+  tourId: Number(route.query.tourId) || null,
+  tourTitle: route.query.tourTitle || '',
+  tourPrice: Number(route.query.tourPrice) || 0,
   date: route.query.date ? new Date(route.query.date) : new Date(),
   participants: Number(route.query.participants) || 1,
   discount: Number(route.query.discount) || 0
+})
+
+// Вывод диагностической информации
+console.log('Данные полученные из URL:', {
+  tourId: route.query.tourId,
+  tourTitle: route.query.tourTitle,
+  tourPrice: route.query.tourPrice,
+  date: route.query.date,
+  participants: route.query.participants
 })
 
 // Детали платежа
@@ -206,11 +223,34 @@ const errors = ref({
 
 // Получение выбранного тура
 const selectedTour = computed(() => {
-  if (!orderDetails.value.tourId && store.cards.length > 0) {
-    // Если ID тура не указан, берем первый тур из списка (для демонстрации)
+  console.log('Поиск тура с ID:', orderDetails.value.tourId, 'в массиве карточек:', store.cards.length)
+  
+  // Если у нас есть данные тура из URL, создадим временный объект
+  if (orderDetails.value.tourTitle && orderDetails.value.tourPrice && !orderDetails.value.tourId) {
+    console.log('Создаю временный объект тура из данных URL')
+    return {
+      id: 0,
+      title: orderDetails.value.tourTitle,
+      price: orderDetails.value.tourPrice,
+      image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
+      location: 'Урал',
+    }
+  }
+  
+  // Если ID тура указан, ищем его в хранилище
+  if (orderDetails.value.tourId) {
+    const foundTour = store.cards.find(card => card.id === Number(orderDetails.value.tourId))
+    console.log('Найден тур из хранилища:', foundTour ? 'Да' : 'Нет')
+    return foundTour || null
+  }
+  
+  // Если ID не указан, берем первый тур из списка
+  if (store.cards.length > 0) {
+    console.log('Использую первый тур из списка для демонстрации')
     return store.cards[0]
   }
-  return store.cards.find(card => card.id === orderDetails.value.tourId) || null
+  
+  return null
 })
 
 // Вычисление итоговой стоимости
@@ -637,6 +677,40 @@ h2
 
 .success-actions
   .home-button
+    display: inline-block
+    padding: 12px 24px
+    background: #3498db
+    color: white
+    text-decoration: none
+    border-radius: 30px
+    font-weight: 600
+    transition: background 0.3s
+    
+    &:hover
+      background: #2980b9
+
+.no-tour-info
+  text-align: center
+  padding: 20px
+  border-radius: 8px
+  background: white
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05)
+  
+  .warning-icon
+    font-size: 48px
+    color: #e74c3c
+    margin-bottom: 20px
+
+  h3
+    margin-bottom: 10px
+    font-size: 22px
+    color: #2c3e50
+
+  p
+    margin-bottom: 20px
+    color: #5d6d7e
+
+  .back-button
     display: inline-block
     padding: 12px 24px
     background: #3498db

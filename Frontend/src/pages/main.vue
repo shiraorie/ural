@@ -24,7 +24,7 @@
         <div class="spinner"></div>
         <p>Загрузка туров...</p>
       </div>
-      <div v-else-if="storeCards.length === 0" class="no-tours">
+      <div v-else-if="!storeCards || storeCards.length === 0" class="no-tours">
         <p>В данный момент нет доступных туров. Пожалуйста, загляните позже.</p>
       </div>
       <div v-else class="card-wrapper">
@@ -40,7 +40,11 @@
           :location="card.location" 
         />
       </div>
-      <div class="button-container" v-if="storeCards.length > 0">
+      <!-- <div class="debug-info" style="margin-top: 20px; font-size: 12px; color: #999;">
+        Карточек в хранилище: {{ storeCards ? storeCards.length : 0 }} | 
+        Статус загрузки: {{ isLoading ? 'Загрузка...' : 'Завершено' }}
+      </div> -->
+      <div class="button-container" v-if="storeCards && storeCards.length > 0">
         <router-link to="/tours" class="view-all-button">Посмотреть все туры</router-link>
       </div>
     </section>
@@ -150,10 +154,16 @@ const router = useRouter()
 const isPopTourOpen = ref(false)
 
 // Вычисляемое свойство для карточек из хранилища
-const storeCards = computed(() => store.cards)
+const storeCards = computed(() => {
+  console.log('Карточки из хранилища:', store.cards)
+  return store.cards
+})
 
 // Вычисляемое свойство для состояния загрузки
-const isLoading = computed(() => store.isLoading)
+const isLoading = computed(() => {
+  console.log('Состояние загрузки:', store.isLoading)
+  return store.isLoading
+})
 
 // Обработчики событий
 const handleCardClick = (card) => {
@@ -172,16 +182,25 @@ const scrollToTours = () => {
 
 // Показать тематические туры
 const showThemeTours = (theme) => {
-  router.push({ path: '/tours', query: { theme } })
+  console.log('Переход к тематическим турам:', theme)
+  // Для хэш-навигации используем правильный формат URL
+  router.push({ path: '/tours', query: { theme: theme } })
 }
 
 // Получение данных при монтировании компонента
-onMounted(() => {
-  // Карточки уже должны быть загружены в хранилище
-  // Если по какой-то причине данных нет, загружаем их
-  if (store.cards.length === 0) {
-    store.getCards()
-  }
+onMounted(async () => {
+  console.log('main.vue - onMounted', {
+    cardsLength: store.cards.length,
+    isLoading: store.isLoading
+  })
+  
+  // Принудительная загрузка карточек
+  await store.getCards()
+  
+  console.log('После загрузки карточек:', {
+    cardsLength: store.cards.length,
+    isLoading: store.isLoading
+  })
 })
 </script>
 
@@ -260,29 +279,64 @@ section
 
 .advantage-card
   background: white
-  border-radius: 12px
-  padding: 30px
+  border-radius: 16px
+  padding: 35px
   text-align: center
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05)
-  transition: transform 0.3s, box-shadow 0.3s
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05)
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)
+  border: 1px solid rgba(0, 0, 0, 0.02)
+  position: relative
+  z-index: 1
+  overflow: hidden
+  
+  &::before
+    content: ''
+    position: absolute
+    z-index: -1
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background: linear-gradient(45deg, rgba(var(--color-primary-rgb), 0.1), rgba(var(--color-primary-rgb), 0.03))
+    transform: scaleX(0)
+    transform-origin: 0 50%
+    transition: transform 0.5s ease-out
   
   &:hover
-    transform: translateY(-10px)
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1)
+    transform: translateY(-15px)
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1)
+    
+    &::before
+      transform: scaleX(1)
   
   .advantage-icon
-    font-size: 48px
-    margin-bottom: 20px
+    font-size: 52px
+    margin-bottom: 25px
+    transition: transform 0.3s ease
+    
+    &:hover
+      transform: scale(1.2) rotate(5deg)
   
   h3
     color: #2c3e50
     margin-bottom: 15px
-    font-size: 20px
-  
-  p
-    color: #7f8c8d
-    line-height: 1.6
-    font-size: 15px
+    font-size: 22px
+    position: relative
+    display: inline-block
+    
+    &::after
+      content: ''
+      position: absolute
+      width: 0
+      height: 2px
+      bottom: -4px
+      left: 50%
+      background-color: var(--color-primary)
+      transition: all 0.3s ease
+    
+  &:hover h3::after
+    width: 100%
+    left: 0
 
 // Стили для карточек
 .card-wrapper 
@@ -311,24 +365,22 @@ section
 
 .themed-tour
   position: relative
-  border-radius: 12px
+  border-radius: 16px
   overflow: hidden
   height: 280px
   cursor: pointer
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1)
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)
   
   &:hover
+    transform: translateY(-10px)
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2)
+    
     .themed-tour-content
       transform: translateY(0)
       background: rgba(0, 0, 0, 0.7)
-  
-  img
-    width: 100%
-    height: 100%
-    object-fit: cover
-    transition: transform 0.6s
     
-    &:hover
+    img
       transform: scale(1.1)
 
 .themed-tour-content
@@ -338,20 +390,41 @@ section
   right: 0
   background: rgba(0, 0, 0, 0.5)
   color: #fff
-  padding: 25px
-  transition: all 0.4s
-  transform: translateY(calc(100% - 80px))
+  padding: 30px
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)
+  transform: translateY(calc(100% - 90px))
   
   h3
-    margin: 0 0 12px
-    font-size: 22px
+    margin: 0 0 15px
+    font-size: 24px
     font-weight: 600
+    position: relative
+    padding-bottom: 10px
+    
+    &::after
+      content: ''
+      position: absolute
+      width: 40px
+      height: 3px
+      background-color: var(--color-primary)
+      bottom: 0
+      left: 0
+      transition: width 0.3s ease
+  
+  &:hover h3::after
+    width: 70px
     
   p
     margin: 0
-    font-size: 15px
+    font-size: 16px
     line-height: 1.6
-    opacity: 0.9
+    opacity: 0
+    transform: translateY(20px)
+    transition: all 0.3s ease 0.1s
+  
+  &:hover p
+    opacity: 1
+    transform: translateY(0)
 
 // Информационный блок
 .info-section
@@ -421,20 +494,36 @@ section
     font-size: 16px
 
 .info-button
-  background: #e74c3c
+  background: linear-gradient(45deg, #e74c3c, #ff7675)
   color: white
   border: none
-  padding: 14px 28px
+  padding: 16px 36px
   border-radius: 50px
   font-size: 16px
   font-weight: 600
   cursor: pointer
-  transition: all 0.3s
+  transition: all 0.4s
+  position: relative
+  overflow: hidden
+  box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2)
+  
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 100%
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
+    transition: left 0.7s ease
   
   &:hover
-    background: #c0392b
-    transform: translateY(-3px)
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
+    background: linear-gradient(45deg, #e74c3c, #e84c3c)
+    transform: translateY(-5px) scale(1.03)
+    box-shadow: 0 15px 30px rgba(231, 76, 60, 0.3)
+    
+    &::before
+      left: 100%
 
 // Секция с новостями
 .news-preview-section
@@ -473,17 +562,34 @@ section
   display: inline-block
   background-color: white
   color: #2980b9
-  padding: 14px 32px
+  padding: 16px 36px
   border-radius: 50px
   font-weight: 600
   font-size: 16px
   text-decoration: none
-  transition: all 0.3s
+  transition: all 0.4s
+  position: relative
+  overflow: hidden
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
+  z-index: 1
+  
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 100%
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)
+    transition: left 0.7s ease
   
   &:hover
     background-color: rgba(255, 255, 255, 0.9)
-    transform: translateY(-3px)
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
+    transform: translateY(-5px) scale(1.03)
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15)
+    
+    &::before
+      left: 100%
 
 // Секция с отзывами
 .testimonials-section
@@ -606,18 +712,34 @@ section
 
 .view-all-button
   display: inline-block
-  background-color: var(--color-primary)
-  color: black
+  background: linear-gradient(45deg, var(--color-primary), #e6d595)
+  color: #000
   border: none
-  padding: 12px 30px
-  border-radius: 30px
+  padding: 14px 34px
+  border-radius: 50px
   font-size: 16px
   font-weight: 600
   text-decoration: none
-  transition: all 0.3s
+  transition: all 0.4s
+  position: relative
+  overflow: hidden
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1)
+  z-index: 1
+  
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 100%
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
+    transition: left 0.7s ease
   
   &:hover
-    transform: translateY(-3px)
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
-    background-color: #d4c78c
+    transform: translateY(-5px)
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15)
+    
+    &::before
+      left: 100%
 </style>

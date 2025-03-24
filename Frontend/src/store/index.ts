@@ -441,18 +441,26 @@ export const useCardsStore = defineStore('cards', () => {
   
   // Методы для работы с турами и карточками
   const getCards = async () => {
-    isLoading.value = true
+    console.log('getCards вызван, текущее состояние:', {
+      cardsLength: cards.value.length,
+      isLoading: isLoading.value
+    })
+    
     try {
-      // На GitHub Pages нет необходимости заново инициализировать карточки,
-      // так как они уже инициализированы при создании хранилища
-      if (cards.value.length === 0) {
-        // Здесь должен быть API-запрос для реального приложения
-        // В данном случае просто добавляем задержку для имитации запроса
-        await new Promise(resolve => setTimeout(resolve, 300))
-      }
+      isLoading.value = true
+      
+      // Убедимся, что массив карточек инициализирован
+      // Для отладки используем таймаут, чтобы симулировать задержку сети
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      console.log('getCards завершен, данные:', {
+        cardsLength: cards.value.length,
+        isLoading: isLoading.value
+      })
+      
       isLoading.value = false
     } catch (error) {
-      console.error('Error fetching cards:', error)
+      console.error('Ошибка загрузки карточек:', error)
       isLoading.value = false
     }
   }

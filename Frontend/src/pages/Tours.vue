@@ -59,6 +59,11 @@
       <!-- Результаты -->
       <div class="results-info" v-if="!isLoading">
         <p>Найдено туров: <span>{{ filteredCards.length }}</span></p>
+        <!-- <div class="debug-info" style="margin-top: 10px; font-size: 12px; color: #999;">
+          Всего карточек: {{ store.cards.length }} | 
+          Выбранная тема: {{ selectedTheme }} | 
+          Сортировка: {{ sortOption }}
+        </div> -->
       </div>
       
       <!-- Список туров -->
@@ -94,8 +99,14 @@
     <!-- Модальное окно с подробной информацией о туре -->
     <popTour 
       v-if="isPopTourOpen" 
-      :tour="store.selectedTour" 
       @close="closePopTour" 
+      :id="selectedTour ? selectedTour.id : null"
+      :images="selectedTour ? selectedTour.images : []" 
+      :title="selectedTour ? selectedTour.title : ''" 
+      :description="selectedTour ? selectedTour.description : ''" 
+      :price="selectedTour ? selectedTour.price : 0" 
+      :rating="selectedTour ? selectedTour.rating : 0" 
+      :includes="selectedTour ? selectedTour.includes : []" 
     />
 
     <!-- Секция "Не нашли подходящий тур?" -->
@@ -127,17 +138,21 @@ const router = useRouter()
 const selectedTheme = ref('all')
 const sortOption = ref('rating-desc')
 const isPopTourOpen = ref(false)
+const selectedTour = ref(null)
 
 // Получаем значение темы из URL параметров при загрузке страницы
-onMounted(() => {
-  // Проверка наличия данных в хранилище
-  if (store.cards.length === 0) {
-    // Если данных нет - загружаем
-    store.getCards()
-  } else {
-    // Если данные уже есть, просто обновляем флаг загрузки
-    isLoading.value = false
-  }
+onMounted(async () => {
+  console.log('Tours.vue - onMounted', {
+    cardsLength: store.cards.length,
+    isLoading: store.isLoading
+  })
+  
+  // Принудительная загрузка карточек
+  await store.getCards()
+  console.log('После загрузки карточек:', {
+    cardsLength: store.cards.length,
+    isLoading: store.isLoading
+  })
   
   // Устанавливаем фильтр из URL, если он есть
   if (route.query.theme) {
@@ -162,18 +177,23 @@ const getThemeTitle = (themeId) => {
 
 // Функция выбора темы
 const selectTheme = (theme) => {
+  console.log('Выбрана тема:', theme)
   selectedTheme.value = theme
+  
   // Обновляем URL при изменении фильтра
+  // Правильный формат для хэш-навигации
   if (theme === 'all') {
-    router.push({ path: '/tours' })
+    router.replace({ path: '/tours', query: null })
   } else {
-    router.push({ path: '/tours', query: { theme } })
+    router.replace({ path: '/tours', query: { theme } })
   }
 }
 
 // Функция для открытия подробной информации о туре
 const handleCardClick = (card) => {
+  console.log('Открытие информации о туре:', card.title)
   store.setSelectedTour(card)
+  selectedTour.value = card
   isPopTourOpen.value = true
 }
 
@@ -334,29 +354,45 @@ const filteredCards = computed(() => {
   gap: 10px
 
 .filter-button
-  padding: 10px 18px
+  padding: 12px 20px
   background-color: white
   border: 2px solid #e0e0e0
-  border-radius: 8px
+  border-radius: 10px
   cursor: pointer
-  transition: all 0.2s
+  transition: all 0.3s ease
   font-size: 15px
   font-weight: 500
+  position: relative
+  overflow: hidden
+  
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 100%
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)
+    transition: left 0.7s ease
   
   &:hover
     background-color: #f5f5f5
-    transform: translateY(-2px)
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05)
+    transform: translateY(-3px)
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08)
+    
+    &::before
+      left: 100%
   
   &.active
     background-color: var(--color-primary)
-    color: black
+    color: #000
     border-color: var(--color-primary)
     box-shadow: 0 5px 15px rgba(var(--color-primary-rgb), 0.3)
+    font-weight: 600
     
     &:hover
-      transform: translateY(-2px)
-      box-shadow: 0 5px 20px rgba(var(--color-primary-rgb), 0.4)
+      transform: translateY(-3px)
+      box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.4)
 
 .select-wrapper
   position: relative
@@ -479,55 +515,104 @@ const filteredCards = computed(() => {
   margin-bottom: 10px
 
 .reset-filters
-  background-color: var(--color-primary)
-  color: white
+  background: linear-gradient(45deg, var(--color-primary), #e6d595)
+  color: #000
   border: none
-  padding: 12px 24px
-  border-radius: 8px
+  padding: 14px 28px
+  border-radius: 10px
   font-size: 16px
+  font-weight: 600
   cursor: pointer
   transition: all 0.3s
+  position: relative
+  overflow: hidden
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1)
+  
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 100%
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
+    transition: left 0.7s ease
   
   &:hover
-    background-color: #1e88e5
-    transform: translateY(-3px)
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1)
+    transform: translateY(-5px)
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15)
+    
+    &::before
+      left: 100%
 
 // Секция с контактами
 .contact-section
-  background-color: var(--color-primary)
-  padding: 60px 0
-  margin-top: 60px
+  background: linear-gradient(135deg, var(--color-primary), #e6d595)
+  padding: 70px 0
+  margin-top: 70px
+  position: relative
+  overflow: hidden
+  
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 15px
+    background: linear-gradient(45deg, transparent 33.333%, #fff 33.333%, #fff 66.667%, transparent 66.667%)
+    background-size: 30px 15px
+    transform: translateY(-50%)
   
   .contact-content
     text-align: center
-    color: white
+    color: #000
     max-width: 700px
     margin: 0 auto
+    position: relative
+    z-index: 2
     
     h2
-      font-size: 32px
-      margin-bottom: 15px
+      font-size: 36px
+      margin-bottom: 20px
+      font-weight: 700
     
     p
       font-size: 18px
-      margin-bottom: 30px
-      opacity: 0.9
+      margin-bottom: 35px
+      opacity: 1
+      line-height: 1.6
     
     .contact-button
-      background-color: white
-      color: var(--color-primary)
+      background-color: #fff
+      color: #000
       border: none
-      padding: 14px 32px
+      padding: 16px 36px
       border-radius: 50px
-      font-size: 16px
+      font-size: 17px
       font-weight: 600
       cursor: pointer
-      transition: all 0.3s
+      transition: all 0.4s
+      position: relative
+      overflow: hidden
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1)
+      
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: -100%
+        width: 100%
+        height: 100%
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)
+        transition: left 0.7s ease
       
       &:hover
-        transform: translateY(-3px)
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2)
+        transform: translateY(-5px) scale(1.03)
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2)
+        
+        &::before
+          left: 100%
 
 // Анимации
 @keyframes fadeIn

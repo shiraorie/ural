@@ -4,7 +4,7 @@
         <div class="card__content">
             <div class="card__header">
                 <h3 class="card__title">{{ title }}</h3>
-                <div class="card__rating">{{ rating }} ★</div>
+                <div class="card__rating">{{ rating }} </div>
             </div>
             <div class="card__location">
                 <span>{{ location }}</span>
@@ -53,55 +53,150 @@ defineProps({
 <style scoped lang="sass">
 .card
     background: #fff
-    border-radius: 12px
+    border-radius: 16px
     overflow: hidden
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1)
     width: 300px
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)
+    position: relative
+    transform: translateY(0)
+    
+    &:hover
+        transform: translateY(-15px) 
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15)
+        
+        .card__image
+            transform: scale(1.05)
+            
+        .card__button
+            background: linear-gradient(45deg, #1e88e5, #4dabf5)
+            box-shadow: 0 10px 20px rgba(30, 136, 229, 0.3)
 
     &__image
         width: 100%
-        height: 200px
+        height: 220px
         object-fit: cover
+        transition: transform 0.6s ease
+        position: relative
+        
+        &::after
+            content: ''
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            background: linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.1))
+            pointer-events: none
 
     &__content
-        padding: 16px
+        padding: 20px
 
     &__header
         display: flex
         justify-content: space-between
         align-items: center
-        margin-bottom: 8px
+        margin-bottom: 12px
 
     &__title
-        font-size: 18px
-        font-weight: 600
+        font-size: 20px
+        font-weight: 700
         margin: 0
+        color: #2c3e50
+        position: relative
+        display: inline-block
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        max-width: 200px
+        padding-bottom: 2px
+        
+        &::after
+            content: ''
+            position: absolute
+            bottom: 0
+            left: 0
+            width: 0
+            height: 2px
+            background-color: var(--color-primary)
+            transition: width 0.3s ease
+            
+        &:hover::after
+            width: 100%
 
     &__rating
         color: #ffd700
-        font-weight: 600
+        font-weight: 700
+        background: rgba(255, 215, 0, 0.1)
+        padding: 5px 10px
+        border-radius: 30px
+        font-size: 14px
+        display: flex
+        align-items: center
+        
+        &::before
+            content: '★'
+            margin-right: 4px
 
     &__location
         color: #666
         font-size: 14px
-        margin-bottom: 8px
+        margin-bottom: 12px
+        display: flex
+        align-items: center
+        
+        &::before
+            content: '📍'
+            margin-right: 5px
+            font-size: 16px
 
     &__price
-        font-size: 16px
-        font-weight: 600
-        margin-bottom: 16px
+        font-size: 18px
+        font-weight: 700
+        margin-bottom: 20px
+        color: #2c3e50
+        
+        span
+            position: relative
+            
+            &::before
+                content: ''
+                position: absolute
+                width: 100%
+                height: 30%
+                background-color: rgba(var(--color-primary-rgb), 0.2)
+                bottom: 0
+                left: 0
+                z-index: -1
+                border-radius: 2px
 
     &__button
         width: 100%
-        padding: 12px
+        padding: 14px
         background: #1e88e5
         color: white
         border: none
-        border-radius: 6px
+        border-radius: 10px
         font-size: 16px
+        font-weight: 600
         cursor: pointer
-        transition: background 0.3s
+        transition: all 0.3s
+        position: relative
+        overflow: hidden
+        
+        &::before
+            content: ''
+            position: absolute
+            top: 0
+            left: -100%
+            width: 100%
+            height: 100%
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)
+            transition: left 0.7s ease
 
         &:hover
-            background: #1976d2
+            transform: translateY(-3px)
+            
+            &::before
+                left: 100%
 </style>
