@@ -87,29 +87,22 @@
               <li>Выбранная тема: {{ selectedTheme }}</li>
               <li>Сортировка: {{ sortOption }}</li>
               <li>Состояние загрузки: {{ isLoading }}</li>
-              <li>Первая карточка: {{ filteredCards[0] ? JSON.stringify(filteredCards[0]) : 'нет данных' }}</li>
             </ul>
           </div>
-          <div v-if="filteredCards.length === 0" class="no-cards-message">
-            Нет доступных карточек для отображения
-          </div>
-          <template v-for="(card, index) in filteredCards" :key="card.id">
-            <div class="card-wrapper">
-              <div class="card-debug-info" style="font-size: 12px; color: #999; margin-bottom: 5px;">
-                Рендеринг карточки {{ index + 1 }}: {{ card.title }}
-              </div>
+          <transition-group name="card-fade">
+            
+            <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
               <card 
-                :handleClick="() => handleCardClick(card)"
-                :title="card.title || 'Без названия'"
-                :description="card.description || ''"
-                :image="card.image || 'https://via.placeholder.com/300x200'"
-                :rating="card.rating || 0"
-                :price="card.price || 0"
-                :location="card.location || ''"
-                :priceUnit="'₽'"
+                :handleClick="() => handleCardClick(card)" 
+                :title="card.title" 
+                :description="card.description" 
+                :image="card.image" 
+                :rating="card.rating" 
+                :price="card.price" 
+                :location="card.location" 
               />
             </div>
-          </template>
+          </transition-group>
         </div>
       </div>
     </div>
@@ -166,11 +159,9 @@ onMounted(async () => {
   })
   
   try {
-    // Загружаем карточки только если их нет
-    if (store.cards.length === 0) {
-      await store.getCards()
-      console.log('Карточки загружены:', store.cards.length)
-    }
+    // Всегда загружаем карточки при монтировании компонента
+    await store.getCards()
+    console.log('Карточки загружены:', store.cards.length)
     
     // Устанавливаем фильтр из URL, если он есть
     if (route.query.theme) {
@@ -237,7 +228,7 @@ const isLoading = computed(() => store.isLoading)
 // Фильтрация и сортировка карточек
 const filteredCards = computed(() => {
   console.log('Вычисление filteredCards:', {
-    storeCardsLength: store.cards?.length || 0,
+    storeCardsLength: store.cards.length,
     isLoading: store.isLoading,
     selectedTheme: selectedTheme.value,
     cards: store.cards
@@ -249,12 +240,7 @@ const filteredCards = computed(() => {
   }
 
   let result = [...store.cards]
-  console.log('Исходные карточки:', result.map(card => ({
-    id: card.id,
-    title: card.title,
-    price: card.price,
-    rating: card.rating
-  })))
+  console.log('Исходные карточки:', result)
   
   // Применяем фильтр по теме
   if (selectedTheme.value !== 'all') {
@@ -515,26 +501,6 @@ const filteredCards = computed(() => {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
   gap: 30px
   padding: 15px
-  background-color: #f0f0f0
-  min-height: 200px
-
-.card-wrapper
-  width: 100%
-  display: flex
-  justify-content: center
-  background-color: #fff
-  padding: 10px
-  border: 1px solid #ddd
-  border-radius: 8px
-
-.no-cards-message
-  grid-column: 1 / -1
-  text-align: center
-  padding: 20px
-  background-color: #fff
-  border: 1px dashed #ddd
-  border-radius: 8px
-  color: #666
 
 // Стили для загрузки и отсутствия результатов
 .loading, .no-results
