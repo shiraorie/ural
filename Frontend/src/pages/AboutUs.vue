@@ -62,7 +62,7 @@
         <div class="team-grid">
           <div class="team-member">
             <div class="member-photo">
-              <img src="https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13" alt="Алексей Иванов">
+              <img :src="GUID_IMAGES[0]" alt="Алексей Иванов">
             </div>
             <div class="member-info">
               <h3>Алексей Иванов</h3>
@@ -73,21 +73,21 @@
           
           <div class="team-member">
             <div class="member-photo">
-              <img src="https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13" alt="Елена Петрова">
+              <img :src="GUID_IMAGES[1]" alt="Елена Петрова">
             </div>
             <div class="member-info">
-              <h3>Елена Петрова</h3>
+              <h3>Игорь Потапов</h3>
               <p class="member-position">Главный гид</p>
-              <p>Историк по образованию, знаток уральского фольклора и традиций. Проводит самые увлекательные экскурсии по историческим местам Урала.</p>
+              <p>Историк по образованию, знаток уральского фольклора и традиций. Проводит самые увлекательные экскурсии по историческим местам Урала. 5+</p>
             </div>
           </div>
           
           <div class="team-member">
             <div class="member-photo">
-              <img src="https://avatars.mds.yandex.net/get-altay/4374841/2a0000017706403316ba81896cf7ca802576/orig" alt="Сергей Кузнецов">
+              <img :src="GUID_IMAGES[2]" alt="Сергей Кузнецов">
             </div>
             <div class="member-info">
-              <h3>Сергей Кузнецов</h3>
+              <h3>Елена Петрова</h3>
               <p class="member-position">Руководитель направления сплавов</p>
               <p>Мастер спорта по водному туризму. Организовал более 150 сплавов по уральским рекам любой сложности.</p>
             </div>
@@ -95,10 +95,11 @@
           
           <div class="team-member">
             <div class="member-photo">
-              <img src="https://avatars.mds.yandex.net/get-altay/4374841/2a0000017706403316ba81896cf7ca802576/orig" alt="Ольга Смирнова">
+              <img :src="GUID_IMAGES[3]" alt="Ольга Смирнова">
             </div>
             <div class="member-info">
-              <h3>Ольга Смирнова</h3>
+              <h3>Александр Алексеев
+              </h3>
               <p class="member-position">Биолог-натуралист</p>
               <p>Специалист по флоре и фауне Урала. Проводит уникальные экологические экскурсии и образовательные программы.</p>
             </div>
@@ -142,7 +143,7 @@
             </ul>
           </div>
           <div class="certificates-image">
-            <img src="https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13" alt="Наши сертификаты">
+            <img src="@/assets/img/aword.jpg" alt="Наши сертификаты">
           </div>
         </div>
       </section>
@@ -203,6 +204,9 @@
 </template>
 
 <script setup>
+import { DEFAULT_IMAGE, IMAGES, GUID_IMAGES } from '../constants/images'
+
+
 // Нет специфической логики для этой страницы
 </script>
 
@@ -716,7 +720,7 @@ section
 
 // Секция с призывом к действию
 .cta-section
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://avatars.mds.yandex.net/i?id=e2c0baa8bdd40b63155df3b7161d9bd7_l-12416107-images-thumbs&n=13')
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('@/assets/img/1.jpg')
   background-size: cover
   background-position: center
   background-attachment: fixed

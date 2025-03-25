@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { DEFAULT_IMAGE } from '../constants/images'
+import { DEFAULT_IMAGE, IMAGES, GUID_IMAGES } from '../constants/images'
 
 // Интерфейсы для карточек туров
 export interface ICard {
@@ -101,7 +101,7 @@ export const useCardsStore = defineStore('cards', () => {
     {
       title: 'Исследуй Урал',
       description: 'Незабываемые путешествия по уникальным местам',
-      image: DEFAULT_IMAGE
+      image: IMAGES[0]
     },
     {
       title: 'Природа Урала',
@@ -111,7 +111,7 @@ export const useCardsStore = defineStore('cards', () => {
     {
       title: 'Активный отдых',
       description: 'Походы, сплавы и экскурсии по живописным местам',
-      image: DEFAULT_IMAGE
+      image: IMAGES[1]
     }
   ])
   
@@ -143,19 +143,19 @@ export const useCardsStore = defineStore('cards', () => {
       id: 'nature',
       title: 'Природа Урала',
       description: 'Озера, горы, заповедники',
-      image: DEFAULT_IMAGE
+      image: IMAGES[2]
     },
     {
       id: 'history',
       title: 'Исторические места',
       description: 'Памятники, музеи, архитектура',
-      image: DEFAULT_IMAGE
+      image: IMAGES[3]
     },
     {
       id: 'adventure',
       title: 'Активный отдых',
       description: 'Походы, сплавы, восхождения',
-      image: DEFAULT_IMAGE
+      image: IMAGES[4]
     }
   ])
 
@@ -242,7 +242,7 @@ export const useCardsStore = defineStore('cards', () => {
         <li>Конкурс ювелирного мастерства</li>
       </ul>
       <p>Для наших клиентов мы подготовили специальный тур, включающий посещение фестиваля и экскурсии по историческим местам, связанным с добычей и обработкой уральских самоцветов.</p>`,
-      image: DEFAULT_IMAGE,
+      image: IMAGES[3],
       date: '2023-05-02',
       category: 'events'
     },
@@ -259,7 +259,7 @@ export const useCardsStore = defineStore('cards', () => {
         <li>Историко-культурный заповедник "Аркаим"</li>
       </ul>
       <p>Чтобы получить скидку, при бронировании укажите промокод "ЮЖНЫЙ_УРАЛ_2023". Предложение действует для групп от 4 человек.</p>`,
-      image: DEFAULT_IMAGE,
+      image: IMAGES[7],
       date: '2023-05-10',
       category: 'offers'
     },
@@ -274,7 +274,7 @@ export const useCardsStore = defineStore('cards', () => {
       <p>Еще одна знаменитая легенда связана с утерянным золотым запасом России, который был вывезен войсками адмирала Колчака во время Гражданской войны. По преданию, несколько вагонов с золотом были спрятаны в горах Южного Урала, и до сих пор многие искатели приключений пытаются найти это сокровище.</p>
       <h3>Тайны горы Иремель</h3>
       <p>Вторая по высоте гора Южного Урала - Иремель - окутана множеством мистических историй. Местные жители верят, что гора обладает особой энергетикой, а в древности здесь располагались священные места для проведения обрядов. Некоторые легенды утверждают, что внутри горы существует проход в параллельный мир.</p>`,
-      image: DEFAULT_IMAGE,
+      image: IMAGES[5],
       date: '2023-05-20',
       category: 'articles'
     },
@@ -334,14 +334,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 1,
             title: 'Природа Южного Урала',
             description: 'Тур по самым живописным местам Южного Урала с посещением национального парка Таганай.',
-            image: DEFAULT_IMAGE,
+            image: IMAGES[2],
             price: 12500,
             rating: 4.8,
             location: 'Южный Урал',
             images: [
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE
+              IMAGES[3],
+              IMAGES[4],
+              IMAGES[5]
             ],
             includes: [
               'Проживание в палатках',
@@ -355,14 +355,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 2,
             title: 'Таганай за 2 дня',
             description: 'Короткое, но насыщенное путешествие в национальный парк «Таганай» — жемчужину Южного Урала.',
-            image: DEFAULT_IMAGE,
+            image: IMAGES[6],
             price: 7800,
             rating: 4.6,
             location: 'Челябинская область',
             images: [
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE
+              IMAGES[7],
+              IMAGES[8],
+              IMAGES[9]
             ],
             includes: [
               'Проживание в приюте',
@@ -376,14 +376,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 3,
             title: 'Озеро Тургояк и гора Вишневая',
             description: 'Поездка на живописное озеро Тургояк, называемое "младшим братом Байкала" и восхождение на гору Вишневая.',
-            image: DEFAULT_IMAGE,
+            image: IMAGES[10],
             price: 9500,
             rating: 4.9,
             location: 'Челябинская область',
             images: [
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE
+              IMAGES[11],
+              IMAGES[12],
+              IMAGES[13]
             ],
             includes: [
               'Проживание в гостевом доме',
@@ -397,14 +397,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 4,
             title: 'Сплав по реке Белая',
             description: 'Увлекательный сплав по одной из красивейших рек Южного Урала. Подходит для начинающих и семей с детьми.',
-            image: DEFAULT_IMAGE,
+            image: IMAGES[5],
             price: 14200,
             rating: 4.7,
             location: 'Башкирия',
             images: [
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE
+              IMAGES[1],
+              IMAGES[6],
+              IMAGES[0]
             ],
             includes: [
               'Проживание в палатках',
@@ -419,14 +419,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 5,
             title: 'По следам древних цивилизаций: Аркаим',
             description: 'Путешествие в одно из самых загадочных мест на Урале - древнее городище Аркаим, возраст которого около 4000 лет.',
-            image: DEFAULT_IMAGE,
+            image: IMAGES[4],
             price: 16800,
             rating: 4.5,
             location: 'Челябинская область',
             images: [
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE
+              IMAGES[5],
+              IMAGES[9],
+              IMAGES[12]
             ],
             includes: [
               'Проживание в гостинице',
@@ -440,14 +440,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 6,
             title: 'Зимний Урал: горные лыжи и снегоходы',
             description: 'Активный зимний отдых на лучших горнолыжных курортах Урала с катанием на снегоходах по заснеженным лесам.',
-            image: DEFAULT_IMAGE,
+            image: IMAGES[7],
             price: 19500,
             rating: 4.8,
             location: 'Челябинская область, Башкирия',
             images: [
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE,
-              DEFAULT_IMAGE
+              IMAGES[5],
+              IMAGES[6],
+              IMAGES[7]
             ],
             includes: [
               'Проживание в отеле 4*',
