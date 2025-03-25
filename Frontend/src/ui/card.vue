@@ -1,28 +1,33 @@
 <template>
     <div class="card">
-        <img :src="image" :alt="title" class="card__image">
+        <img :src="image" :alt="title" class="card__image" @error="handleImageError">
         <div class="card__content">
             <div class="card__header">
                 <h3 class="card__title">{{ title }}</h3>
-                <div class="card__rating">{{ rating }} </div>
+                <div class="card__rating" v-if="rating">
+                    <span class="star">★</span>
+                    {{ rating }}
+                </div>
             </div>
-            <div class="card__location">
-                <span>{{ location }}</span>
+            <div class="card__location" v-if="location">
+                <span class="location-icon">📍</span>
+                {{ location }}
             </div>
-            <div class="card__price">
-                <span>₽ {{ price }}/{{ priceUnit }}</span>
+            <div class="card__price" v-if="price">
+                <span>{{ formatPrice(price) }} {{ priceUnit }}</span>
             </div>
             <button class="card__button" @click="handleClick">Забронировать</button>
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted } from 'vue'
+import type { PropType } from 'vue'
 
 const props = defineProps({
     handleClick: {
-        type: Function,
+        type: Function as PropType<(e: MouseEvent) => void>,
         required: true
     },
     image: {
@@ -37,13 +42,11 @@ const props = defineProps({
     },
     rating: {
         type: Number,
-        required: true,
         default: 0
     },
     location: {
         type: String,
-        required: true,
-        default: 'Локация не указана'
+        default: ''
     },
     price: {
         type: Number,
@@ -52,11 +55,21 @@ const props = defineProps({
     },
     priceUnit: {
         type: String,
-        default: 'Человек'
+        default: '₽'
     }
 })
 
-// Добавляем логирование пропсов при монтировании компонента
+// Форматирование цены
+const formatPrice = (value: number): string => {
+    return new Intl.NumberFormat('ru-RU').format(value)
+}
+
+// Обработка ошибки загрузки изображения
+const handleImageError = (e: Event) => {
+    const target = e.target as HTMLImageElement
+    target.src = 'https://via.placeholder.com/300x200?text=Изображение+не+найдено'
+}
+
 onMounted(() => {
     console.log('Card mounted with props:', {
         title: props.title,
@@ -68,15 +81,18 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">.card
+<style scoped lang="sass">
+.card
     background: #fff
     border-radius: 16px
     overflow: hidden
     box-shadow: 0 10px 30px rgba(0,0,0,0.1)
-    width: 300px
+    width: 100%
+    max-width: 320px
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)
     position: relative
     transform: translateY(0)
+    margin: 0 auto
     
     &:hover
         transform: translateY(-15px) 
@@ -150,10 +166,7 @@ onMounted(() => {
         font-size: 14px
         display: flex
         align-items: center
-        
-        &::before
-            content: '★'
-            margin-right: 4px
+        gap: 4px
 
     &__location
         color: #666
@@ -161,10 +174,9 @@ onMounted(() => {
         margin-bottom: 12px
         display: flex
         align-items: center
-        
-        &::before
-            content: '📍'
-            margin-right: 5px
+        gap: 5px
+
+        .location-icon
             font-size: 16px
 
     &__price
@@ -213,7 +225,5 @@ onMounted(() => {
 
         &:hover
             transform: translateY(-3px)
-            
-            &::before
-                left: 100%
+            background: #1976d2
 </style>

@@ -87,22 +87,21 @@
               <li>Выбранная тема: {{ selectedTheme }}</li>
               <li>Сортировка: {{ sortOption }}</li>
               <li>Состояние загрузки: {{ isLoading }}</li>
+              <li>Первая карточка: {{ filteredCards[0] ? JSON.stringify(filteredCards[0]) : 'нет данных' }}</li>
             </ul>
           </div>
-          <transition-group name="card-fade">
-            
-            <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
-              <card 
-                :handleClick="() => handleCardClick(card)" 
-                :title="card.title" 
-                :description="card.description" 
-                :image="card.image" 
-                :rating="card.rating" 
-                :price="card.price" 
-                :location="card.location" 
-              />
-            </div>
-          </transition-group>
+          <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
+            <card 
+              :handleClick="() => handleCardClick(card)"
+              :title="card.title"
+              :description="card.description"
+              :image="card.image"
+              :rating="card.rating"
+              :price="card.price"
+              :location="card.location"
+              :priceUnit="'₽'"
+            />
+          </div>
         </div>
       </div>
     </div>
