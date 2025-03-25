@@ -132,8 +132,6 @@
       </div>
     </div>
   </div>
-
-  {{ store.cards }}
 </template>
 
 <script setup>
@@ -162,9 +160,11 @@ onMounted(async () => {
   })
   
   try {
-    // Всегда загружаем карточки при монтировании компонента
-    await store.getCards()
-    console.log('Карточки загружены:', store.cards.length)
+    // Загружаем карточки только если их нет
+    if (store.cards.length === 0) {
+      await store.getCards()
+      console.log('Карточки загружены:', store.cards.length)
+    }
     
     // Устанавливаем фильтр из URL, если он есть
     if (route.query.theme) {
