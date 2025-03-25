@@ -1,8 +1,6 @@
 <template>
     <div class="card" @click="handleClick">
-        <div class="card-debug" style="position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.5); color: white; padding: 5px; font-size: 12px; z-index: 1000;">
-            Card Component
-        </div>
+     
         <img 
             :src="processImageUrl(image)" 
             :alt="title" 
