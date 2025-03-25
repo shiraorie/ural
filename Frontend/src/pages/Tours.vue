@@ -92,17 +92,16 @@
           </div>
           <transition-group name="card-fade">
             
-            <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
-              <card 
-                :handleClick="() => handleCardClick(card)" 
-                :title="card.title || 'Без названия'"
-                :image="card.image || 'https://via.placeholder.com/300x200'"
-                :rating="card.rating || 0"
-                :price="card.price || 0"
-                :location="card.location || ''"
-                :priceUnit="'₽'"
-              />
-            </div>
+            <Card 
+              v-for="card in filteredCards" :key="card.id" class="card-wrapper"
+              :handleClick="() => handleCardClick(card)" 
+              :title="card.title || 'Без названия'"
+              :image="card.image || 'https://via.placeholder.com/300x200'"
+              :rating="card.rating || 0"
+              :price="card.price || 0"
+              :location="card.location || ''"
+              :priceUnit="'₽'"
+            />
           </transition-group>
         </div>
       </div>
@@ -138,8 +137,9 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCardsStore } from '@/store'
-import card from '@/ui/card.vue'
+import Card from '@/ui/card.vue'
 import popTour from '@/ui/popTour.vue'
+
 
 // Инициализация хранилища и маршрутизатора
 const store = useCardsStore()
