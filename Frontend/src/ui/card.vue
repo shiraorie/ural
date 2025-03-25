@@ -1,22 +1,29 @@
 <template>
-    <div class="card">
-        <img :src="image" :alt="title" class="card__image" @error="handleImageError">
+    <div class="card" @click="handleClick">
+        <img 
+            :src="processImageUrl(image)" 
+            :alt="title" 
+            class="card__image" 
+            @error="handleImageError"
+        >
         <div class="card__content">
             <div class="card__header">
                 <h3 class="card__title">{{ title }}</h3>
-                <div class="card__rating" v-if="rating">
+                <div class="card__rating" v-if="rating > 0">
                     <span class="star">★</span>
-                    {{ rating }}
+                    {{ rating.toFixed(1) }}
                 </div>
             </div>
             <div class="card__location" v-if="location">
                 <span class="location-icon">📍</span>
                 {{ location }}
             </div>
-            <div class="card__price" v-if="price">
+            <div class="card__price" v-if="price > 0">
                 <span>{{ formatPrice(price) }} {{ priceUnit }}</span>
             </div>
-            <button class="card__button" @click="handleClick">Забронировать</button>
+            <button class="card__button" @click.stop="handleClick">
+                Забронировать
+            </button>
         </div>
     </div>
 </template>
@@ -61,12 +68,38 @@ const props = defineProps({
 
 // Форматирование цены
 const formatPrice = (value: number): string => {
-    return new Intl.NumberFormat('ru-RU').format(value)
+    try {
+        return new Intl.NumberFormat('ru-RU').format(value)
+    } catch (error) {
+        console.error('Ошибка форматирования цены:', error)
+        return value.toString()
+    }
+}
+
+// Обработка путей к изображениям
+const processImageUrl = (url: string): string => {
+    if (!url) return 'https://via.placeholder.com/300x200?text=Нет+изображения'
+    
+    // Если это абсолютный URL, возвращаем как есть
+    if (url.startsWith('http') || url.startsWith('https')) {
+        return url
+    }
+    
+    // Если это относительный путь, добавляем базовый URL
+    const baseUrl = import.meta.env.BASE_URL || '/'
+    return `${baseUrl}${url.startsWith('/') ? url.slice(1) : url}`
 }
 
 // Обработка ошибки загрузки изображения
-const handleImageError = (e: Event) => {
-    const target = e.target as HTMLImageElement
+const handleImageError = (event: Event) => {
+    const target = event.target as HTMLImageElement
+    console.log('Ошибка загрузки изображения:', {
+        originalSrc: target.src,
+        props: {
+            image: props.image,
+            title: props.title
+        }
+    })
     target.src = 'https://via.placeholder.com/300x200?text=Изображение+не+найдено'
 }
 
@@ -76,7 +109,7 @@ onMounted(() => {
         price: props.price,
         rating: props.rating,
         location: props.location,
-        image: props.image
+        image: processImageUrl(props.image)
     })
 })
 </script>

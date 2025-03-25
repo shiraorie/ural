@@ -90,18 +90,20 @@
               <li>Первая карточка: {{ filteredCards[0] ? JSON.stringify(filteredCards[0]) : 'нет данных' }}</li>
             </ul>
           </div>
-          <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
-            <card 
-              :handleClick="() => handleCardClick(card)"
-              :title="card.title"
-              :description="card.description"
-              :image="card.image"
-              :rating="card.rating"
-              :price="card.price"
-              :location="card.location"
-              :priceUnit="'₽'"
-            />
-          </div>
+          <template v-for="card in filteredCards" :key="card.id">
+            <div class="card-wrapper">
+              <card 
+                :handleClick="() => handleCardClick(card)"
+                :title="card.title || 'Без названия'"
+                :description="card.description || ''"
+                :image="card.image || 'https://via.placeholder.com/300x200'"
+                :rating="card.rating || 0"
+                :price="card.price || 0"
+                :location="card.location || ''"
+                :priceUnit="'₽'"
+              />
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -227,7 +229,7 @@ const isLoading = computed(() => store.isLoading)
 // Фильтрация и сортировка карточек
 const filteredCards = computed(() => {
   console.log('Вычисление filteredCards:', {
-    storeCardsLength: store.cards.length,
+    storeCardsLength: store.cards?.length || 0,
     isLoading: store.isLoading,
     selectedTheme: selectedTheme.value,
     cards: store.cards
@@ -239,7 +241,12 @@ const filteredCards = computed(() => {
   }
 
   let result = [...store.cards]
-  console.log('Исходные карточки:', result)
+  console.log('Исходные карточки:', result.map(card => ({
+    id: card.id,
+    title: card.title,
+    price: card.price,
+    rating: card.rating
+  })))
   
   // Применяем фильтр по теме
   if (selectedTheme.value !== 'all') {

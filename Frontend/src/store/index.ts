@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { DEFAULT_IMAGE } from '../constants/images'
 
 // Интерфейсы для карточек туров
 export interface ICard {
@@ -100,17 +101,17 @@ export const useCardsStore = defineStore('cards', () => {
     {
       title: 'Исследуй Урал',
       description: 'Незабываемые путешествия по уникальным местам',
-      image: 'https://proza.ru/pics/2022/11/03/1598.jpg'
+      image: DEFAULT_IMAGE
     },
     {
       title: 'Природа Урала',
       description: 'Первозданная красота уральских гор и озёр',
-      image: 'https://proza.ru/pics/2022/11/03/1598.jpg'
+      image: DEFAULT_IMAGE
     },
     {
       title: 'Активный отдых',
       description: 'Походы, сплавы и экскурсии по живописным местам',
-      image: 'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13'
+      image: DEFAULT_IMAGE
     }
   ])
   
@@ -142,19 +143,19 @@ export const useCardsStore = defineStore('cards', () => {
       id: 'nature',
       title: 'Природа Урала',
       description: 'Озера, горы, заповедники',
-      image: 'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13'
+      image: DEFAULT_IMAGE
     },
     {
       id: 'history',
       title: 'Исторические места',
       description: 'Памятники, музеи, архитектура',
-      image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg'
+      image: DEFAULT_IMAGE
     },
     {
       id: 'adventure',
       title: 'Активный отдых',
       description: 'Походы, сплавы, восхождения',
-      image: 'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/'
+      image: DEFAULT_IMAGE
     }
   ])
 
@@ -185,7 +186,7 @@ export const useCardsStore = defineStore('cards', () => {
   // Информационный блок о компании
   const companyInfo = ref({
     title: 'Путешествуйте по Уралу с нами',
-    image: 'https://stihi.ru/pics/2022/06/06/2533.jpg',
+    image: DEFAULT_IMAGE,
     paragraphs: [
       'Урал – загадочный край, полный легенд и преданий, с богатой историей и удивительной природой. Здесь величественные горы соседствуют с бескрайними лесами, а кристально чистые озера отражают красоту синего неба.',
       'С компанией "Память Урала" вы откроете для себя все многообразие этого уникального региона. Наши туры охватывают самые интересные места: от Национального парка Таганай с его причудливыми скалами до таинственного озера Тургояк, от исторических городов до затерянных в лесах деревень.',
@@ -223,7 +224,7 @@ export const useCardsStore = defineStore('cards', () => {
         <li>Фотографии с самых красивых видовых точек</li>
       </ul>
       <p>Первые группы отправятся по новому маршруту уже в июне. Успейте забронировать места!</p>`,
-      image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
+      image: DEFAULT_IMAGE,
       date: '2023-04-15',
       category: 'tours'
     },
@@ -241,7 +242,7 @@ export const useCardsStore = defineStore('cards', () => {
         <li>Конкурс ювелирного мастерства</li>
       </ul>
       <p>Для наших клиентов мы подготовили специальный тур, включающий посещение фестиваля и экскурсии по историческим местам, связанным с добычей и обработкой уральских самоцветов.</p>`,
-      image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
+      image: DEFAULT_IMAGE,
       date: '2023-05-02',
       category: 'events'
     },
@@ -258,7 +259,7 @@ export const useCardsStore = defineStore('cards', () => {
         <li>Историко-культурный заповедник "Аркаим"</li>
       </ul>
       <p>Чтобы получить скидку, при бронировании укажите промокод "ЮЖНЫЙ_УРАЛ_2023". Предложение действует для групп от 4 человек.</p>`,
-      image: 'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13',
+      image: DEFAULT_IMAGE,
       date: '2023-05-10',
       category: 'offers'
     },
@@ -273,7 +274,7 @@ export const useCardsStore = defineStore('cards', () => {
       <p>Еще одна знаменитая легенда связана с утерянным золотым запасом России, который был вывезен войсками адмирала Колчака во время Гражданской войны. По преданию, несколько вагонов с золотом были спрятаны в горах Южного Урала, и до сих пор многие искатели приключений пытаются найти это сокровище.</p>
       <h3>Тайны горы Иремель</h3>
       <p>Вторая по высоте гора Южного Урала - Иремель - окутана множеством мистических историй. Местные жители верят, что гора обладает особой энергетикой, а в древности здесь располагались священные места для проведения обрядов. Некоторые легенды утверждают, что внутри горы существует проход в параллельный мир.</p>`,
-      image: 'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13',
+      image: DEFAULT_IMAGE,
       date: '2023-05-20',
       category: 'articles'
     },
@@ -291,7 +292,7 @@ export const useCardsStore = defineStore('cards', () => {
         <li>Уральского завода тяжелого машиностроения</li>
       </ul>
       <p>Экскурсии проводятся опытными гидами с техническим образованием, которые расскажут об истории промышленного освоения Урала и о том, какую роль этот регион сыграл в становлении российской индустрии.</p>`,
-      image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
+      image: DEFAULT_IMAGE,
       date: '2023-06-01',
       category: 'tours'
     }
@@ -333,14 +334,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 1,
             title: 'Природа Южного Урала',
             description: 'Тур по самым живописным местам Южного Урала с посещением национального парка Таганай.',
-            image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
+            image: DEFAULT_IMAGE,
             price: 12500,
             rating: 4.8,
             location: 'Южный Урал',
             images: [
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13'
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE
             ],
             includes: [
               'Проживание в палатках',
@@ -354,14 +355,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 2,
             title: 'Таганай за 2 дня',
             description: 'Короткое, но насыщенное путешествие в национальный парк «Таганай» — жемчужину Южного Урала.',
-            image: 'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13',
+            image: DEFAULT_IMAGE,
             price: 7800,
             rating: 4.6,
             location: 'Челябинская область',
             images: [
-              'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13',
-              'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
-              'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/'
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE
             ],
             includes: [
               'Проживание в приюте',
@@ -375,14 +376,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 3,
             title: 'Озеро Тургояк и гора Вишневая',
             description: 'Поездка на живописное озеро Тургояк, называемое "младшим братом Байкала" и восхождение на гору Вишневая.',
-            image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
+            image: DEFAULT_IMAGE,
             price: 9500,
             rating: 4.9,
             location: 'Челябинская область',
             images: [
-              'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
-              'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
-              'https://proza.ru/pics/2022/11/03/1598.jpg'
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE
             ],
             includes: [
               'Проживание в гостевом доме',
@@ -396,14 +397,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 4,
             title: 'Сплав по реке Белая',
             description: 'Увлекательный сплав по одной из красивейших рек Южного Урала. Подходит для начинающих и семей с детьми.',
-            image: 'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
+            image: DEFAULT_IMAGE,
             price: 14200,
             rating: 4.7,
             location: 'Башкирия',
             images: [
-              'https://cdn2.tu-tu.ru/image/pagetree_node_data/1/fe0707f36ec41d8b2005cc3752b5a412/',
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://proza.ru/pics/2022/11/03/1598.jpg'
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE
             ],
             includes: [
               'Проживание в палатках',
@@ -418,14 +419,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 5,
             title: 'По следам древних цивилизаций: Аркаим',
             description: 'Путешествие в одно из самых загадочных мест на Урале - древнее городище Аркаим, возраст которого около 4000 лет.',
-            image: 'https://proza.ru/pics/2022/11/03/1598.jpg',
+            image: DEFAULT_IMAGE,
             price: 16800,
             rating: 4.5,
             location: 'Челябинская область',
             images: [
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://avatars.mds.yandex.net/i?id=e51022439a06709fabbbc838ce8ddf75_l-9146551-images-thumbs&n=13',
-              'https://avatars.mds.yandex.net/i?id=13050183b8757b09711f6d7d9414f639d5560707-5603739-images-thumbs&n=13'
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE
             ],
             includes: [
               'Проживание в гостинице',
@@ -439,14 +440,14 @@ export const useCardsStore = defineStore('cards', () => {
             id: 6,
             title: 'Зимний Урал: горные лыжи и снегоходы',
             description: 'Активный зимний отдых на лучших горнолыжных курортах Урала с катанием на снегоходах по заснеженным лесам.',
-            image: 'https://i.pinimg.com/originals/18/21/ea/1821ea8a9db97e62f2c68c821eac3958.jpg',
+            image: DEFAULT_IMAGE,
             price: 19500,
             rating: 4.8,
             location: 'Челябинская область, Башкирия',
             images: [
-              'https://proza.ru/pics/2022/11/03/1598.jpg',
-              'https://avatars.mds.yandex.net/get-altay/5626432/2a00000187f8c3fde94e4889fbda1c63cbb4/orig',
-              'https://avatars.mds.yandex.net/get-altay/4831158/2a00000187f8c3fec15c33f45ba79f35be3a/orig'
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE,
+              DEFAULT_IMAGE
             ],
             includes: [
               'Проживание в отеле 4*',
