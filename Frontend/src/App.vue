@@ -5,6 +5,7 @@
     <Header />
     <router-view />
     <Footer />
+    <allowAlerts />
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import router from './router'
 import { ref } from 'vue'
 import Header from './ui/header.vue'
 import Footer from './ui/footer.vue'
+import allowAlerts from '@/ui/alllowAlerts.vue'
 
 const DefaultTitle = 'Память Урала'
 

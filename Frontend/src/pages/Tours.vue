@@ -59,11 +59,6 @@
       <!-- Результаты -->
       <div class="results-info" v-if="!isLoading">
         <p>Найдено туров: <span>{{ filteredCards.length }}</span></p>
-        <!-- <div class="debug-info" style="margin-top: 10px; font-size: 12px; color: #999;">
-          Всего карточек: {{ store.cards.length }} | 
-          Выбранная тема: {{ selectedTheme }} | 
-          Сортировка: {{ sortOption }}
-        </div> -->
       </div>
       
       <!-- Список туров -->
@@ -79,21 +74,10 @@
           <button class="reset-filters" @click="selectTheme('all')">Сбросить фильтры</button>
         </div>
         <div v-else class="tours-grid">
-          <div class="debug-info" style="grid-column: 1/-1; margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
-            <p>Отладочная информация:</p>
-            <ul>
-              <li>Количество карточек в store: {{ store.cards.length }}</li>
-              <li>Количество отфильтрованных карточек: {{ filteredCards.length }}</li>
-              <li>Выбранная тема: {{ selectedTheme }}</li>
-              <li>Сортировка: {{ sortOption }}</li>
-              <li>Состояние загрузки: {{ isLoading }}</li>
-              <li>Первая карточка: {{ filteredCards ? JSON.stringify(filteredCards) : 'нет данных' }}</li>
-            </ul>
-          </div>
           <transition-group name="card-fade">
-            
             <Card 
-              v-for="card in filteredCards" :key="card.id" class="card-wrapper"
+              v-for="card in filteredCards" 
+              :key="card.id"
               :handleClick="() => handleCardClick(card)" 
               :title="card.title || 'Без названия'"
               :image="card.image || 'https://via.placeholder.com/300x200'"
@@ -154,28 +138,17 @@ const selectedTour = ref(null)
 
 // Получаем значение темы из URL параметров при загрузке страницы
 onMounted(async () => {
-  console.log('main.vue - onMounted начало')
-  try {
-    // Загружаем карточки, если их еще нет
-    if (store.cards.length === 0) {
-      await store.getCards()
-      console.log('Карточки загружены:', {
-        cardsLength: store.cards.length,
-        isLoading: store.isLoading
-      })
-    }
-  } catch (error) {
-    console.error('Ошибка при загрузке карточек:', error)
+  if (store.cards.length === 0) {
+    await store.getCards()
   }
-  console.log('main.vue - onMounted завершено:', {
-    cardsLength: store.cards.length,
-    isLoading: store.isLoading
-  })
+  
+  if (route.query.theme) {
+    selectedTheme.value = route.query.theme
+  }
 })
 
 // Следим за изменением фильтра в URL
 watch(() => route.query.theme, (newTheme) => {
-  console.log('Изменение темы в URL:', newTheme)
   if (newTheme) {
     selectedTheme.value = newTheme
   } else {
@@ -191,7 +164,6 @@ const getThemeTitle = (themeId) => {
 
 // Функция выбора темы
 const selectTheme = (theme) => {
-  console.log('Выбрана тема:', theme)
   selectedTheme.value = theme
   
   // Обновляем URL при изменении фильтра
@@ -205,7 +177,6 @@ const selectTheme = (theme) => {
 
 // Функция для открытия подробной информации о туре
 const handleCardClick = (card) => {
-  console.log('Открытие информации о туре:', card.title)
   store.setSelectedTour(card)
   selectedTour.value = card
   isPopTourOpen.value = true
@@ -221,25 +192,13 @@ const isLoading = computed(() => store.isLoading)
 
 // Фильтрация и сортировка карточек
 const filteredCards = computed(() => {
-  console.log('Вычисление filteredCards:', {
-    storeCardsLength: store.cards.length,
-    isLoading: store.isLoading,
-    selectedTheme: selectedTheme.value,
-    cards: store.cards
-  })
-
   if (!store.cards || !Array.isArray(store.cards) || store.cards.length === 0) {
-    console.log('Карточки отсутствуют в store или некорректный формат')
     return []
   }
 
   let result = [...store.cards]
-  console.log('Исходные карточки:', result)
   
-  // Применяем фильтр по теме
   if (selectedTheme.value !== 'all') {
-    console.log('Применяем фильтр по теме:', selectedTheme.value)
-    // В реальном проекте здесь будет фильтрация по соответствующей теме
     switch(selectedTheme.value) {
       case 'nature':
         result = result.filter(card => 
@@ -263,11 +222,8 @@ const filteredCards = computed(() => {
         )
         break
     }
-    console.log('После фильтрации по теме:', result.length)
   }
   
-  // Применяем сортировку
-  console.log('Применяем сортировку:', sortOption.value)
   switch(sortOption.value) {
     case 'price-asc':
       result.sort((a, b) => a.price - b.price)
@@ -280,10 +236,6 @@ const filteredCards = computed(() => {
       break
   }
   
-  console.log('Итоговый результат:', {
-    length: result.length,
-    cards: result
-  })
   return result
 })
 </script>
@@ -495,6 +447,14 @@ const filteredCards = computed(() => {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
   gap: 30px
   padding: 15px
+  
+  @media (max-width: 992px)
+    grid-template-columns: repeat(2, 1fr)
+    gap: 20px
+  
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+    gap: 15px
 
 // Стили для загрузки и отсутствия результатов
 .loading, .no-results
@@ -658,89 +618,4 @@ const filteredCards = computed(() => {
 .card-fade-leave-to
   opacity: 0
   transform: translateY(30px)
-
-.card-wrapper
-  width: 100%
-  display: flex
-  justify-content: center
-
-// Медиа-запросы
-@media (max-width: 992px)
-  .page-title
-    font-size: 40px
-  
-  .filters
-    padding: 15px
-  
-  .filter-group
-    min-width: 100%
-  
-  .filter-button
-    font-size: 14px
-    padding: 10px 16px
-  
-  .tours-grid
-    grid-template-columns: repeat(2, 1fr)
-    gap: 20px
-    padding: 10px
-
-@media (max-width: 768px)
-  .banner
-    height: 200px
-    
-  .page-title
-    font-size: 28px
-    padding: 0 15px
-  
-  .page-subtitle
-    font-size: 16px
-    padding: 0 20px
-  
-  .filters-wrapper
-    margin-bottom: 20px
-  
-  .filter-options
-    flex-wrap: wrap
-    justify-content: center
-  
-  .tours-grid
-    grid-template-columns: 1fr
-    gap: 15px
-    padding: 10px
-  
-  .contact-section
-    padding: 40px 0
-    
-    .contact-content
-      padding: 0 20px
-      
-      h2
-        font-size: 24px
-      
-      p
-        font-size: 16px
-        margin-bottom: 25px
-
-@media (max-width: 480px)
-  .banner
-    height: 180px
-  
-  .page-title
-    font-size: 24px
-  
-  .filter-button
-    padding: 8px 12px
-    font-size: 13px
-  
-  .sort-select
-    font-size: 14px
-    padding: 10px
-  
-  .results-info
-    font-size: 14px
-    
-  .contact-section
-    .contact-button
-      padding: 12px 24px
-      font-size: 15px
 </style> 
