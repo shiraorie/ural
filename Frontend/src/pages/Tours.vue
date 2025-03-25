@@ -90,8 +90,14 @@
               <li>Первая карточка: {{ filteredCards[0] ? JSON.stringify(filteredCards[0]) : 'нет данных' }}</li>
             </ul>
           </div>
-          <template v-for="card in filteredCards" :key="card.id">
+          <div v-if="filteredCards.length === 0" class="no-cards-message">
+            Нет доступных карточек для отображения
+          </div>
+          <template v-for="(card, index) in filteredCards" :key="card.id">
             <div class="card-wrapper">
+              <div class="card-debug-info" style="font-size: 12px; color: #999; margin-bottom: 5px;">
+                Рендеринг карточки {{ index + 1 }}: {{ card.title }}
+              </div>
               <card 
                 :handleClick="() => handleCardClick(card)"
                 :title="card.title || 'Без названия'"
@@ -509,6 +515,26 @@ const filteredCards = computed(() => {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
   gap: 30px
   padding: 15px
+  background-color: #f0f0f0
+  min-height: 200px
+
+.card-wrapper
+  width: 100%
+  display: flex
+  justify-content: center
+  background-color: #fff
+  padding: 10px
+  border: 1px solid #ddd
+  border-radius: 8px
+
+.no-cards-message
+  grid-column: 1 / -1
+  text-align: center
+  padding: 20px
+  background-color: #fff
+  border: 1px dashed #ddd
+  border-radius: 8px
+  color: #666
 
 // Стили для загрузки и отсутствия результатов
 .loading, .no-results
