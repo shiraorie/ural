@@ -132,6 +132,8 @@
       </div>
     </div>
   </div>
+
+  {{ store.cards }}
 </template>
 
 <script setup>
