@@ -87,6 +87,7 @@
               <li>Выбранная тема: {{ selectedTheme }}</li>
               <li>Сортировка: {{ sortOption }}</li>
               <li>Состояние загрузки: {{ isLoading }}</li>
+              <li>Первая карточка: {{ filteredCards ? JSON.stringify(filteredCards) : 'нет данных' }}</li>
             </ul>
           </div>
           <transition-group name="card-fade">
@@ -153,29 +154,22 @@ const selectedTour = ref(null)
 
 // Получаем значение темы из URL параметров при загрузке страницы
 onMounted(async () => {
-  console.log('Tours.vue - onMounted начало:', {
-    cardsLength: store.cards.length,
-    isLoading: store.isLoading
-  })
-  
+  console.log('main.vue - onMounted начало')
   try {
-    // Всегда загружаем карточки при монтировании компонента
-    await store.getCards()
-    console.log('Карточки загружены:', store.cards.length)
-    
-    // Устанавливаем фильтр из URL, если он есть
-    if (route.query.theme) {
-      selectedTheme.value = route.query.theme
-      console.log('Установлена тема из URL:', selectedTheme.value)
+    // Загружаем карточки, если их еще нет
+    if (store.cards.length === 0) {
+      await store.getCards()
+      console.log('Карточки загружены:', {
+        cardsLength: store.cards.length,
+        isLoading: store.isLoading
+      })
     }
   } catch (error) {
     console.error('Ошибка при загрузке карточек:', error)
   }
-  
-  console.log('Tours.vue - onMounted завершено:', {
+  console.log('main.vue - onMounted завершено:', {
     cardsLength: store.cards.length,
-    isLoading: store.isLoading,
-    selectedTheme: selectedTheme.value
+    isLoading: store.isLoading
   })
 })
 
