@@ -174,4 +174,80 @@ onUnmounted(() => {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .carousel {
+    &-slide {
+      img {
+        height: 300px;
+      }
+      
+      .slide-content {
+        padding: 15px;
+        
+        h2 {
+          font-size: 20px;
+          margin-bottom: 5px;
+        }
+        
+        p {
+          font-size: 14px;
+        }
+      }
+    }
+    
+    &-button {
+      padding: 12px;
+      font-size: 16px;
+    }
+    
+    &-dots {
+      bottom: 15px;
+      gap: 8px;
+      
+      .dot {
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel {
+    &-slide {
+      img {
+        height: 200px;
+      }
+      
+      .slide-content {
+        padding: 10px;
+        
+        h2 {
+          font-size: 18px;
+          margin-bottom: 3px;
+        }
+        
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+    
+    &-button {
+      padding: 8px;
+      font-size: 14px;
+    }
+    
+    &-dots {
+      bottom: 10px;
+      gap: 6px;
+      
+      .dot {
+        width: 8px;
+        height: 8px;
+      }
+    }
+  }
+}
 </style>
