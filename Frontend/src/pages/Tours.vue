@@ -90,6 +90,7 @@
             </ul>
           </div>
           <transition-group name="card-fade">
+            
             <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
               <card 
                 :handleClick="() => handleCardClick(card)" 
@@ -158,11 +159,9 @@ onMounted(async () => {
   })
   
   try {
-    // Загружаем карточки, если их еще нет
-    if (store.cards.length === 0) {
-      await store.getCards()
-      console.log('Карточки загружены:', store.cards.length)
-    }
+    // Всегда загружаем карточки при монтировании компонента
+    await store.getCards()
+    console.log('Карточки загружены:', store.cards.length)
     
     // Устанавливаем фильтр из URL, если он есть
     if (route.query.theme) {

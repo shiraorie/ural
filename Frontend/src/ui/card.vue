@@ -68,8 +68,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.card
+<style scoped lang="sass">.card
     background: #fff
     border-radius: 16px
     overflow: hidden
