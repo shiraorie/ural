@@ -21,12 +21,8 @@
 
 ---
 
-### **Номинация работы (нужное подчеркнуть или выделить):**
-- [ ] Настольное приложение  
-- [ ] Мобильное приложение  
-- **[x] Сайт**  
-- [ ] Дизайнерская разработка  
-
+### **Номинация работы :**
+- **Сайт**  
 ---
 
 ### **Название работы:**
@@ -92,14 +88,7 @@ npm run build
 - **GitHub Repository:** [https://github.com/shiraorie/ural](https://github.com/shiraorie/ural)  
 - **Live Demo:** [https://shiraorie.github.io/ural/](https://shiraorie.github.io/ural/)  
 
----
 
-### **Ссылки на используемые источники:**
-1. Документация Vue.js: [https://vuejs.org/](https://vuejs.org/)  
-2. Документация Pinia: [https://pinia.vuejs.org/](https://pinia.vuejs.org/)  
-3. GitHub Pages Deployment Guide: [https://docs.github.com/en/pages](https://docs.github.com/en/pages)  
-
----
 
 ### **Дополнительные материалы:**
 - **Видео-обзор работы:** [ссылка на видео](#)  
