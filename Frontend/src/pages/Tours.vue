@@ -94,12 +94,12 @@
             <div v-for="card in filteredCards" :key="card.id" class="card-wrapper">
               <card 
                 :handleClick="() => handleCardClick(card)" 
-                :title="card.title" 
-                :description="card.description" 
-                :image="card.image" 
-                :rating="card.rating" 
-                :price="card.price" 
-                :location="card.location" 
+                :title="card.title || 'Без названия'"
+                :image="card.image || 'https://via.placeholder.com/300x200'"
+                :rating="card.rating || 0"
+                :price="card.price || 0"
+                :location="card.location || ''"
+                :priceUnit="'₽'"
               />
             </div>
           </transition-group>
