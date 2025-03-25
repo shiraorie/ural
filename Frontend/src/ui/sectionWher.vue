@@ -81,55 +81,124 @@ import Map from '@/ui/map.vue'
 
 .contact-info
     flex: 1
-    padding: 30px
-    background: #fff
+    padding: 40px
+    background: white
+    border-radius: 20px
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05)
+    
+    @media (max-width: 992px)
+        padding: 30px
+    
+    @media (max-width: 576px)
+        padding: 25px
+        border-radius: 20px 20px 0 0
 
 .map-container
     flex: 1.5
     min-height: 500px
+    position: relative
+    overflow: hidden
+    border-radius: 0 20px 20px 0
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05)
+    
+    @media (max-width: 1200px)
+        min-height: 450px
     
     @media (max-width: 992px)
         min-height: 400px
+        border-radius: 0 0 20px 20px
+    
+    @media (max-width: 768px)
+        min-height: 350px
+    
+    @media (max-width: 576px)
+        min-height: 300px
 
 .map
     width: 100%
     height: 100%
-    border-radius: 0
+    border: none
+    transition: all 0.3s ease
     
-    @media (max-width: 992px)
-        border-radius: 0 0 16px 16px
+    &:hover
+        filter: contrast(110%)
 
 .contact-title
-    font-size: 24px
-    font-weight: 600
-    margin-bottom: 24px
+    font-size: 28px
+    font-weight: 700
+    margin-bottom: 30px
     color: #2c3e50
+    position: relative
+    padding-bottom: 15px
+    
+    &::after
+        content: ''
+        position: absolute
+        bottom: 0
+        left: 0
+        width: 50px
+        height: 3px
+        background: var(--color-primary)
+        border-radius: 2px
+    
+    @media (max-width: 992px)
+        font-size: 24px
+        margin-bottom: 25px
+    
+    @media (max-width: 576px)
+        font-size: 22px
+        margin-bottom: 20px
 
 .contact-item
     display: flex
     align-items: flex-start
-    margin-bottom: 20px
-    padding-bottom: 20px
+    margin-bottom: 25px
+    padding-bottom: 25px
     border-bottom: 1px solid #f0f0f0
+    transition: all 0.3s ease
     
     &:last-child
         border-bottom: none
+        margin-bottom: 0
+        padding-bottom: 0
+    
+    &:hover
+        transform: translateX(10px)
+        
+        .contact-icon
+            background: var(--color-primary)
+            color: white
+    
+    @media (max-width: 576px)
+        margin-bottom: 20px
+        padding-bottom: 20px
 
 .contact-icon
-    flex: 0 0 40px
-    width: 40px
-    height: 40px
-    background: #e9f5fe
-    color: #3498db
-    border-radius: 50%
+    flex: 0 0 45px
+    width: 45px
+    height: 45px
+    background: #f8f9fa
+    color: var(--color-primary)
+    border-radius: 12px
     display: flex
     align-items: center
     justify-content: center
-    margin-right: 16px
+    margin-right: 20px
+    transition: all 0.3s ease
+    
+    @media (max-width: 576px)
+        flex: 0 0 40px
+        width: 40px
+        height: 40px
+        margin-right: 15px
     
     svg
-        width: 20px
-        height: 20px
+        width: 22px
+        height: 22px
+        
+        @media (max-width: 576px)
+            width: 20px
+            height: 20px
 
 .contact-content
     flex: 1
@@ -139,21 +208,37 @@ import Map from '@/ui/map.vue'
         font-weight: 600
         margin: 0 0 8px
         color: #2c3e50
+        
+        @media (max-width: 576px)
+            font-size: 16px
+            margin-bottom: 6px
     
     p
         margin: 0
         color: #5d6d7e
-        line-height: 1.5
+        line-height: 1.6
+        font-size: 15px
+        
+        @media (max-width: 576px)
+            font-size: 14px
         
         a
-            color: #3498db
+            color: var(--color-primary)
             text-decoration: none
-            transition: color 0.3s
+            transition: all 0.3s ease
+            font-weight: 500
             
             &:hover
-                color: #2980b9
+                filter: brightness(0.9)
+                transform: translateY(-1px)
 
 .call-form
-    margin-top: 20px
+    margin-top: 30px
+    padding-top: 30px
+    border-top: 1px solid #f0f0f0
+    
+    @media (max-width: 576px)
+        margin-top: 25px
+        padding-top: 25px
 </style>
 

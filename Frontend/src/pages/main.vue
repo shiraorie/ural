@@ -319,33 +319,51 @@ section
 
 // Тематические подборки
 .themed-tours-section
-  background-color: #f8f9fa
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)
   padding: 60px 0
   border-radius: 16px
-  margin: 80px 0
+  margin: 40px 0
+  
+  @media (max-width: 768px)
+    padding: 40px 0
+    margin: 30px 0
+  
+  @media (max-width: 576px)
+    padding: 30px 0
+    margin: 20px 0
 
 .themed-tours
   display: grid
   grid-template-columns: repeat(3, 1fr)
   gap: 30px
-  padding: 0 15px
+  padding: 0 30px
   
-  @media (max-width: 992px)
+  @media (max-width: 1200px)
     grid-template-columns: repeat(2, 1fr)
+    gap: 25px
+  
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
     gap: 20px
+    padding: 0 20px
   
   @media (max-width: 576px)
-    grid-template-columns: 1fr
-    gap: 15px
+    padding: 0 15px
 
 .themed-tour
   position: relative
-  border-radius: 16px
+  border-radius: 20px
   overflow: hidden
-  height: 250px
+  height: 300px
   cursor: pointer
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
   transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)
+  
+  @media (max-width: 992px)
+    height: 250px
+  
+  @media (max-width: 768px)
+    height: 220px
   
   &:hover
     transform: translateY(-10px)
@@ -353,24 +371,33 @@ section
     
     .themed-tour-content
       transform: translateY(0)
-      background: rgba(0, 0, 0, 0.7)
+      background: rgba(0, 0, 0, 0.75)
+      backdrop-filter: blur(5px)
     
     img
       transform: scale(1.1)
 
-  @media (max-width: 768px)
-    height: 200px
+  img
+    width: 100%
+    height: 100%
+    object-fit: cover
+    transition: transform 0.8s ease
 
 .themed-tour-content
   position: absolute
   bottom: 0
   left: 0
   right: 0
-  background: rgba(0, 0, 0, 0.5)
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4))
   color: #fff
   padding: 30px
   transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)
-  transform: translateY(calc(100% - 90px))
+  transform: translateY(calc(100% - 80px))
+  
+  @media (max-width: 768px)
+    padding: 20px
+    transform: translateY(0)
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4))
   
   h3
     margin: 0 0 15px
@@ -379,30 +406,39 @@ section
     position: relative
     padding-bottom: 10px
     
+    @media (max-width: 768px)
+      font-size: 20px
+      margin-bottom: 10px
+    
     &::after
       content: ''
       position: absolute
       width: 40px
       height: 3px
-      background-color: var(--color-primary)
+      background: var(--color-primary)
       bottom: 0
       left: 0
       transition: width 0.3s ease
   
   &:hover h3::after
     width: 70px
-    
+  
   p
     margin: 0
     font-size: 16px
     line-height: 1.6
-    opacity: 0
+    opacity: 0.9
     transform: translateY(20px)
     transition: all 0.3s ease 0.1s
-  
-  &:hover p
-    opacity: 1
-    transform: translateY(0)
+    
+    @media (max-width: 768px)
+      font-size: 14px
+      transform: translateY(0)
+      opacity: 1
+      display: -webkit-box
+      -webkit-line-clamp: 2
+      -webkit-box-orient: vertical
+      overflow: hidden
 
 // Информационный блок
 .info-section
@@ -562,70 +598,102 @@ section
 
 // Секция с отзывами
 .testimonials-section
-  padding: 60px 0
-  background-color: #f8f9fa
-  border-radius: 16px
+  padding: 80px 0
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)
+  position: relative
+  overflow: hidden
+  
+  @media (max-width: 768px)
+    padding: 60px 0
+  
+  @media (max-width: 576px)
+    padding: 40px 0
 
 .testimonials-slider
-  display: flex
-  flex-wrap: wrap
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
   gap: 30px
-  justify-content: center
+  padding: 20px
+  margin: 0 auto
+  max-width: 1200px
+  
+  @media (max-width: 1200px)
+    grid-template-columns: repeat(2, 1fr)
+    gap: 25px
+  
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+    gap: 20px
+    padding: 15px
 
 .testimonial
-  flex: 0 0 calc(33.333% - 20px)
-  max-width: calc(33.333% - 20px)
   background: white
-  border-radius: 12px
+  border-radius: 20px
   padding: 30px
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05)
-  transition: transform 0.3s, box-shadow 0.3s
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05)
+  transition: all 0.4s ease
+  position: relative
+  overflow: hidden
   
   &:hover
     transform: translateY(-10px)
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1)
   
-  @media (max-width: 992px)
-    flex: 0 0 calc(50% - 15px)
-    max-width: calc(50% - 15px)
+  // &::before
+  //   content: '"'
+  //   position: absolute
+  //   top: 20px
+  //   left: 20px
+  //   font-size: 120px
+  //   color: rgba(var(--color-primary-rgb), 0.1)
+  //   font-family: serif
+  //   line-height: 1
+  //   z-index: 0
+  
+  @media (max-width: 768px)
+    padding: 25px
     
-  @media (max-width: 576px)
-    flex: 0 0 100%
-    max-width: 100%
+    &::before
+      font-size: 100px
+      top: 15px
+      left: 15px
+
+.testimonial-content
+  position: relative
+  z-index: 1
 
 .testimonial-text
-  font-style: italic
-  color: #5d6d7e
-  margin-bottom: 25px
+  font-size: 16px
   line-height: 1.8
-  position: relative
+  color: #2c3e50
+  margin-bottom: 25px
+  font-style: italic
   
-  &:before
-    content: '"'
-    font-size: 70px
-    color: #e9ecef
-    position: absolute
-    top: -30px
-    left: -15px
-    z-index: -1
-    
-    @media (max-width: 768px)
-      font-size: 50px
-      top: -20px
+  @media (max-width: 768px)
+    font-size: 15px
+    margin-bottom: 20px
 
 .testimonial-author
   display: flex
   flex-direction: column
+  gap: 5px
+  padding-top: 20px
+  border-top: 1px solid #eee
 
 .testimonial-name
   font-weight: 700
   color: #2c3e50
-  font-size: 16px
-  margin-bottom: 5px
+  font-size: 18px
+  
+  @media (max-width: 768px)
+    font-size: 16px
 
 .testimonial-tour
   font-size: 14px
-  color: #7f8c8d
+  color: var(--color-primary)
+  
+  @media (max-width: 768px)
+    font-size: 13px
 
 // Медиа-запросы для адаптивности
 @media (max-width: 992px)
